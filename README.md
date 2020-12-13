@@ -4,12 +4,22 @@
 <p>A detailed and easy-to-use C# engine for game development.</p>
 <h3>Creating a new PC (Player Character)</h3>
 <pre>
-    Player Felix = new Player
-    {
-         Name = "Felix",
-         RaceType = ERaces.Human,
-         OwnerName = "Jonathan",
-         ClassType = EClasses.Fighter,
-         Level = 1,
-    };
+Player Felix = new Player
+{
+    Name = "Felix",
+    RaceType = ERaces.Human,
+    OwnerName = "Jonathan",
+    ClassType = EClasses.Fighter,
+    Level = 1,
+};
+</pre>
+<h3>Rolling Dice</h3>
+<pre>
+DiceRoll Dice = new DiceRoll();
+var Response = Dice.Roll(amount, sides);
+</pre>
+<p>Amount is the amount of die, and the sides is well... how many sides the die has.</p>
+<pre>
+Dice.Roll(1, 20);
+Is the same as rolling a 1d20
 </pre>
