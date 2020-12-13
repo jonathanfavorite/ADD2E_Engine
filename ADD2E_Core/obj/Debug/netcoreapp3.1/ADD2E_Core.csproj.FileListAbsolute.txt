@@ -1,0 +1,13 @@
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\obj\Debug\netcoreapp3.1\ADD2E_Core.csprojAssemblyReference.cache
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\obj\Debug\netcoreapp3.1\ADD2E_Core.AssemblyInfoInputs.cache
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\obj\Debug\netcoreapp3.1\ADD2E_Core.AssemblyInfo.cs
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\obj\Debug\netcoreapp3.1\ADD2E_Core.csproj.CoreCompileInputs.cache
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\bin\Debug\netcoreapp3.1\ADD2E_Core.exe
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\bin\Debug\netcoreapp3.1\ADD2E_Core.deps.json
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\bin\Debug\netcoreapp3.1\ADD2E_Core.runtimeconfig.json
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\bin\Debug\netcoreapp3.1\ADD2E_Core.runtimeconfig.dev.json
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\bin\Debug\netcoreapp3.1\ADD2E_Core.dll
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\bin\Debug\netcoreapp3.1\ADD2E_Core.pdb
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\obj\Debug\netcoreapp3.1\ADD2E_Core.dll
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\obj\Debug\netcoreapp3.1\ADD2E_Core.pdb
+C:\Users\jonat\source\repos\ADD2E_Engine\ADD2E_Core\obj\Debug\netcoreapp3.1\ADD2E_Core.genruntimeconfig.cache
