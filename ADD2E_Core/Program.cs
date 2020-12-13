@@ -27,9 +27,8 @@ namespace ADD2E_Core
                 RaceType = ERaces.Human,
                 OwnerName = "Jonathan",
                 ClassType = EClasses.Fighter,
-                Level = 1,
+                Level = 5,
             };
-
             Felix.CreateCharacter();
 
             Console.WriteLine("Created Player:");

@@ -12,5 +12,6 @@ namespace ADD2E_Core.General.AbilityScoresList
         public double SystemShockPercentage { get; set; } = 0.70;
         public double ResurrectionSurvivalPercentage { get; set; } = 0.70;
         public int PoisionSave { get; set; } = 0;
+
     }
 }

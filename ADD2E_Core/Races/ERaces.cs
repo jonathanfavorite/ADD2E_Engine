@@ -6,6 +6,7 @@ namespace ADD2E_Core.Races
 {
     public enum ERaces
     {
+        All,
         Human,
         Elf,
         Dwarf
