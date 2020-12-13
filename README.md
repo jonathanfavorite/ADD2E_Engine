@@ -23,3 +23,21 @@ var Response = Dice.Roll(amount, sides);
 Dice.Roll(1, 20);
 Is the same as rolling a 1d20
 </pre>
+<h3>Creating and adding items to a player</h3>
+<pre>
+Player Gotrek = new Player
+{
+    Name = "Gotrek",
+    RaceType = ERaces.Dwarf,
+    ClassType = EClasses.Fighter,
+    Level = 5,
+};
+Equipment Cheese = new Equipment
+{
+    Type = EEquipmentType.Food,
+    Name = "Cheese",
+    Description = "Some slightly moldy cheese.",
+    Price = { Copper = 5 }
+};
+Gotrek.Equipment.Add(Cheese);
+</pre>
