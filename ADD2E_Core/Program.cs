@@ -7,6 +7,7 @@ using ADD2E_Core.Classes;
 using ADD2E_Core.Rules;
 using ADD2E_Core.General;
 using ADD2E_Core.General.Dice;
+using ADD2E_Core.ItemsAndEquipment;
 namespace ADD2E_Core
 {
     public class Program
@@ -15,6 +16,7 @@ namespace ADD2E_Core
         {
             RollDice(5, 20); // Roll 5 20 sided die
             CreatePlayer();
+            CreateItem();
             Console.ReadLine();
         }
         static void CreatePlayer()
@@ -40,7 +42,24 @@ namespace ADD2E_Core
         {
             DiceRoll Dice = new DiceRoll();
             var Response = Dice.Roll(amount, sides);
-            var y = 0;
+        }
+        static void CreateItem()
+        {
+            Player Gotrek = new Player
+            {
+                Name = "Gotrek",
+                RaceType = ERaces.Dwarf,
+                ClassType = EClasses.Fighter,
+                Level = 5,
+            };
+            Equipment Cheese = new Equipment
+            {
+                Type = EEquipmentType.Food,
+                Name = "Cheese",
+                Description = "Some slightly moldy cheese.",
+                Price = { Copper = 5 }
+            };
+            Gotrek.Equipment.Add(Cheese);
         }
         
     }

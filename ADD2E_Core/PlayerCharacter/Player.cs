@@ -7,6 +7,7 @@ using ADD2E_Core.Classes.List;
 using ADD2E_Core.Rules;
 using ADD2E_Core.Races.List;
 using ADD2E_Core.General;
+using ADD2E_Core.ItemsAndEquipment;
 
 namespace ADD2E_Core.PlayerCharacter
 {
@@ -22,11 +23,9 @@ namespace ADD2E_Core.PlayerCharacter
         public IRace Race { get; set; }
         public EClasses ClassType { get; set; }
         public IClass Class { get; set; }
-
+        public List<IEquipment> Equipment { get; set; } = new List<IEquipment>();
         public AbilityScores AbilityScores { get; set; } = new AbilityScores();
-
         public int Level { get; set; } = 1;
-
         private CharacterRules characterRules = new CharacterRules();
         public void CreateCharacter()
         {
@@ -55,7 +54,6 @@ namespace ADD2E_Core.PlayerCharacter
             return new Human();
         }
         #endregion
-
 
         #region Set Class
         private void setPlayerClass()

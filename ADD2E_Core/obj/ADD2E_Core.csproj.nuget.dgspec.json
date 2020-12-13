@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jonat\\source\\repos\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj": {}
+    "C:\\git\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jonat\\source\\repos\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj": {
+    "C:\\git\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jonat\\source\\repos\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj",
+        "projectUniqueName": "C:\\git\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj",
         "projectName": "ADD2E_Core",
-        "projectPath": "C:\\Users\\jonat\\source\\repos\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj",
+        "projectPath": "C:\\git\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj",
         "packagesPath": "C:\\Users\\jonat\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jonat\\source\\repos\\ADD2E_Engine\\ADD2E_Core\\obj\\",
+        "outputPath": "C:\\git\\ADD2E_Engine\\ADD2E_Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
