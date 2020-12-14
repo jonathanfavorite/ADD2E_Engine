@@ -9,6 +9,8 @@ namespace ADD2E_Core.General.AbilityScoresList
         public EAbilityScores Name { get; private set; } = EAbilityScores.Strength;
         public int Value { get; set; } = 10;
         public int HitProb { get; set; } = 0;
+        public int MaxPress { get; set; } = 0;
+        public int OpenDoors { get; set; } = 0;
         public int DamageAdjustment { get; set; } = 0;
         public double BendBarsPercentage { get; set; } = 0.01;
     }

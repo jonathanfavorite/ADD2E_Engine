@@ -26,6 +26,7 @@ namespace ADD2E_Core.PlayerCharacter
         public int Level { get; set; } = 1;
 
         private CharacterRules characterRules = new CharacterRules();
+        private AbilityScoreRules abilityScoreRules = new AbilityScoreRules();
         #endregion
         public Player()
         {
@@ -36,6 +37,7 @@ namespace ADD2E_Core.PlayerCharacter
             SetPlayerRace();
             setPlayerClass();
             SetupHitPoints();
+            UpdateAbilityScores();
         }
 
         #region HitPoints
@@ -106,6 +108,17 @@ namespace ADD2E_Core.PlayerCharacter
         }
         #endregion
 
+        #region Set Ability Scores
+        public void UpdateAbilityScores()
+        {
+            AbilityScores.Strength = abilityScoreRules.SetStrength(18);
+            AbilityScores.Dexterity = abilityScoreRules.SetDexterity(16);
+            AbilityScores.Constitution = abilityScoreRules.SetConstitution(15);
+            AbilityScores.Intelligence = abilityScoreRules.SetIntelligence(14);
+            AbilityScores.Wisdom = abilityScoreRules.SetWisdom(13);
+            AbilityScores.Charisma = abilityScoreRules.SetCharisma(16);
+        }
+        #endregion
 
     }
 }

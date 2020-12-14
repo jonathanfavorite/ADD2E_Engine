@@ -8,6 +8,7 @@ using ADD2E_Core.Rules;
 using ADD2E_Core.General;
 using ADD2E_Core.General.Dice;
 using ADD2E_Core.ItemsAndEquipment;
+using System.IO;
 namespace ADD2E_Core
 {
     public class Program
@@ -60,6 +61,7 @@ namespace ADD2E_Core
             };
             Gotrek.Equipment.Add(Cheese);
         }
+
         
     }
 }
