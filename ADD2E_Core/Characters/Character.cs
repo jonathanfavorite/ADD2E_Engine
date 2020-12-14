@@ -18,25 +18,24 @@ namespace ADD2E_Core.Characters
         #region Setup Base Variables
         public int? PlayerID { get; set; } = null;
         public string Name { get; set; }
-        public ERaces RaceType { get; set; }
+        public int Level { get; set; } = 1;
         public IRace Race { get; set; }
-        public EClasses ClassType { get; set; }
         public IClass Class { get; set; }
-
-        public bool RandomizeStats = false;
         public int HitPoints { get; set; } = 0;
         public int ArmorClass { get; set; } = 10;
-        public List<IEquipment> Equipment { get; private set; } = new List<IEquipment>();
-       
-        public IWeapon PrimaryWeapon { get; set; }
-
-        public AbilityScores AbilityScores { get; set; } = new AbilityScores();
-        public int Level { get; set; } = 1;
         public ThacoScore Thaco { get; set; }
+        public AbilityScores AbilityScores { get; set; } = new AbilityScores();
+        public bool RandomizeStats = false;
+        public List<IEquipment> Equipment { get; private set; } = new List<IEquipment>();
+        public IWeapon PrimaryWeapon { get; set; }
 
         private CharacterRules characterRules = new CharacterRules();
 
         private AbilityScoreRules abilityScoreRules = new AbilityScoreRules();
+
+        public ERaces RaceType { get; set; }
+        public EClasses ClassType { get; set; }
+
         #endregion
         public Character()
         {

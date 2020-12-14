@@ -8,18 +8,19 @@ using ADD2E_Core.Rules;
 using ADD2E_Core.General;
 using ADD2E_Core.General.Dice;
 using ADD2E_Core.ItemsAndEquipment;
+using ADD2E_Core.IO;
 using System.IO;
 namespace ADD2E_Core
 {
     public class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             RollDice(5, 20); // Roll 5 20 sided die
-            CreatePlayer();
+            await CreatePlayer();
             Console.ReadLine();
         }
-        static void CreatePlayer()
+        static async Task CreatePlayer()
         {
             Character Felix = new Character
             {
@@ -46,15 +47,17 @@ namespace ADD2E_Core
             Console.WriteLine();
 
 
-            Felix.AddItem(CreateItem(), 20);
+            Felix.AddItem(CreateItem(), 10);
             Felix.AddItem(CreateRope(), 2);
 
             ShowEquipmentForCharacter(Felix);
 
-            Console.WriteLine();
 
-            Felix.RemoveItem(Felix.Equipment[0], 5);
-            ShowEquipmentForCharacter(Felix);
+            CharacterActions actions = new CharacterActions();
+
+            //await actions.saveCharacter(Felix);
+            //Console.WriteLine("Character Saved");
+
 
             Console.WriteLine();
 

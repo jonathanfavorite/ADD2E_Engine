@@ -6,6 +6,9 @@ using ADD2E_Core.Races;
 using ADD2E_Core.Characters;
 using ADD2E_Core.Classes.List.FighterDetails;
 using ADD2E_Core.Combat;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
 namespace ADD2E_Core.Classes.List
 {
     public class Fighter : IFighter
@@ -14,7 +17,7 @@ namespace ADD2E_Core.Classes.List
 
         public List<EAbilityScores> PrimeRequirement { get; set; } = new List<EAbilityScores>();
         public int HitDie { get; set; } = 10;
-
+        [JsonConverter(typeof(StringEnumConverter))]
         public EClassGroup ClassGroup { get; set; } = EClassGroup.Warrior;
         public List<ERaces> AllowedRaces { get; set; } = new List<ERaces>();
         public Dictionary<EAbilityScores, int> MinimumAbilityScoreRequirements { get; set; } = new Dictionary<EAbilityScores, int>();
@@ -26,11 +29,7 @@ namespace ADD2E_Core.Classes.List
             AllowedRaces.Add(ERaces.All);
             ExperienceLevels = FormatExperienceLevels();
         }
-        public int CalculateHitDie(Character player)
-        {
-            return 0;
-        }
-        public List<FighterExperienceLevels> FormatExperienceLevels()
+        private List<FighterExperienceLevels> FormatExperienceLevels()
         {
             List<FighterExperienceLevels> returnFighterExpLevels = new List<FighterExperienceLevels>
             {

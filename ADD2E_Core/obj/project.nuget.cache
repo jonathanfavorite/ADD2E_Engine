@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "nLsN4spDHBTxceBfmSF1j4RhdiPju4PDWThOYpzwOQnilgpNhkk0p2u7YkinyR+8jPMK60TFfpeW5EDCQxY5cQ==",
+  "dgSpecHash": "ow9CPrUg6PVEokvaGoqN7CXmr1I8+hke9Cj+Jn0d9De5eOMWSh3BNWgQJO+M57x5bPlmUf6nr5b70/MYFwkq3Q==",
   "success": true,
   "projectFilePath": "C:\\git\\ADD2E_Engine\\ADD2E_Core\\ADD2E_Core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\jonat\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
   "logs": []
 }
