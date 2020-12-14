@@ -10,6 +10,7 @@ using ADD2E_Core.General;
 using ADD2E_Core.General.Dice;
 using ADD2E_Core.ItemsAndEquipment;
 using ADD2E_Core.Combat;
+using System.Linq;
 namespace ADD2E_Core.Characters
 {
     public class Character
@@ -26,6 +27,9 @@ namespace ADD2E_Core.Characters
         public int HitPoints { get; set; } = 0;
         public int ArmorClass { get; set; } = 10;
         public List<IEquipment> Equipment { get; private set; } = new List<IEquipment>();
+       
+        public IWeapon PrimaryWeapon { get; set; }
+
         public AbilityScores AbilityScores { get; set; } = new AbilityScores();
         public int Level { get; set; } = 1;
         public ThacoScore Thaco { get; set; }
@@ -45,6 +49,7 @@ namespace ADD2E_Core.Characters
             setPlayerClass();
             SetupHitPoints();
             SetupThaco();
+            Equipment.Add(PrimaryWeapon);
             if(RandomizeStats)
             {
                 RandomizeAbilityScores();
@@ -162,11 +167,24 @@ namespace ADD2E_Core.Characters
         #endregion
 
         #region Inventory 
-        public void AddItem(IEquipment item, int quantity)
+        public void AddItem(IEquipment item, int quantity = 1)
         {
             for(int i = 0; i <= quantity - 1; i++)
             {
-                Equipment.Add(item);
+                Random r = new Random();
+                IEquipment thisItem = item;
+                thisItem.ItemID = item.Type.ToString() + "_" + r.Next(1, 99999);
+                Equipment.Add(thisItem);
+            }
+        }
+        public void RemoveItem(IEquipment item, int quantity = 1)
+        {
+            // Search to see if it exists
+            var searchItem = Equipment.FindAll(x => x.Name == item.Name).ToList();
+            if(searchItem.Count() <= quantity) { quantity = searchItem.Count();  }
+            for (int i = 0; i <= quantity - 1; i++)
+            {
+                Equipment.Remove(searchItem[i]);
             }
         }
         #endregion

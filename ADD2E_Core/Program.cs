@@ -27,10 +27,11 @@ namespace ADD2E_Core
                 RaceType = ERaces.Human,
                 ClassType = EClasses.Fighter,
                 Level = 5,
-                RandomizeStats = true
+                RandomizeStats = true,
+                PrimaryWeapon = AddPrimaryWeapon()
             };
             Felix.CreateCharacter();
-            Felix.AddItem(CreateItem(), 441);
+           
 
             Console.WriteLine("-- Player Information --");
             Console.WriteLine("Name:  {0}", Felix.Name);
@@ -43,7 +44,20 @@ namespace ADD2E_Core
             Console.WriteLine();
             ShowAbilityScores(Felix);
             Console.WriteLine();
+
+
+            Felix.AddItem(CreateItem(), 20);
+            Felix.AddItem(CreateRope(), 2);
+
             ShowEquipmentForCharacter(Felix);
+
+            Console.WriteLine();
+
+            Felix.RemoveItem(Felix.Equipment[0], 5);
+            ShowEquipmentForCharacter(Felix);
+
+            Console.WriteLine();
+
         }
         static void ShowAbilityScores(Character p)
         {
@@ -90,12 +104,36 @@ namespace ADD2E_Core
                 Type = EEquipmentType.Food,
                 Name = "Cheese",
                 Description = "Some slightly moldy cheese.",
-                Price = { Copper = 5 },
+                Price = { Copper = 1 },
                 Consumeable = true
             };
+            Item.CreateItem();
             return Item;
         }
-
+        static IEquipment CreateRope()
+        {
+            Equipment Rope = new Equipment
+            {
+                Type = EEquipmentType.Misc,
+                Name = "Rope (50ft)",
+                Price = {Silver = 50}
+            };
+            Rope.CreateItem();
+            return Rope;
+        }
+        static IWeapon AddPrimaryWeapon()
+        {
+            Weapon Sword = new Weapon
+            {
+                Name = "Bastard Sword",
+                 AttackType = EWeaponAttackType.S,
+                 Category = EWeaponCategory.BastardSwordTwoHanded,
+                 TwoHanded = true,
+                 Price = { Gold = 1},
+                 Weight = 10
+            };
+            return Sword;
+        }
 
     }
 }
