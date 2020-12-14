@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Folder Include="SavingThrowRules\" />
-    <Folder Include="NonPlayerCharacter\" />
+    <Folder Include="Characters\" />
   </ItemGroup>
 
 </Project>

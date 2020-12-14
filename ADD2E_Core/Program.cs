@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ADD2E_Core.PlayerCharacter;
+using ADD2E_Core.Characters;
 using ADD2E_Core.Races;
 using ADD2E_Core.Classes;
 using ADD2E_Core.Rules;
@@ -17,32 +17,35 @@ namespace ADD2E_Core
         {
             RollDice(5, 20); // Roll 5 20 sided die
             CreatePlayer();
-            CreateItem();
             Console.ReadLine();
         }
         static void CreatePlayer()
         {
-            Player Felix = new Player
+            Character Felix = new Character
             {
                 Name = "Felix",
                 RaceType = ERaces.Human,
-                OwnerName = "Jonathan",
                 ClassType = EClasses.Fighter,
                 Level = 5,
                 RandomizeStats = true
             };
             Felix.CreateCharacter();
-            
-            Console.WriteLine("Name: {0}", Felix.Name);
-            Console.WriteLine("Race: {0}", Felix.Race.Name);
+            Felix.AddItem(CreateItem(), 441);
+
+            Console.WriteLine("-- Player Information --");
+            Console.WriteLine("Name:  {0}", Felix.Name);
+            Console.WriteLine("Race:  {0}", Felix.Race.Name);
             Console.WriteLine("Class: {0}", Felix.Class.Name);
             Console.WriteLine("Level: {0}", Felix.Level);
-            Console.WriteLine("HP: {0}", Felix.HitPoints);
+            Console.WriteLine("HP:    {0}", Felix.HitPoints);
+            Console.WriteLine("AC:    {0}", Felix.ArmorClass);
+            Console.WriteLine("Thaco: {0}", Felix.Thaco.Value);
             Console.WriteLine();
             ShowAbilityScores(Felix);
             Console.WriteLine();
+            ShowEquipmentForCharacter(Felix);
         }
-        static void ShowAbilityScores(Player p)
+        static void ShowAbilityScores(Character p)
         {
             Console.WriteLine($"-- Ability Scores --");
             Console.WriteLine($"Strength:     {p.AbilityScores.Strength.Value} ({AbilityAdj(p.AbilityScores.Strength.HitProb)})");
@@ -69,16 +72,20 @@ namespace ADD2E_Core
             DiceRoll Dice = new DiceRoll();
             var Response = Dice.Roll(amount, sides);
         }
-        static void CreateItem()
+        static void ShowEquipmentForCharacter(Character p)
         {
-            Player Gotrek = new Player
+            Console.WriteLine($"-- {p.Name}'s Equipment --");
+            // Group up items by name
+            EquipmentManager eManager = new EquipmentManager(p.Equipment);
+            eManager.DisplayAllEquipmentByQuantity();
+            foreach(string item in eManager.DisplayAllEquipmentByQuantity())
             {
-                Name = "Gotrek",
-                RaceType = ERaces.Dwarf,
-                ClassType = EClasses.Fighter,
-                Level = 5,
-            };
-            Equipment Cheese = new Equipment
+                Console.WriteLine($"{item}");
+            }
+        }
+        static IEquipment CreateItem()
+        {
+            Equipment Item = new Equipment
             {
                 Type = EEquipmentType.Food,
                 Name = "Cheese",
@@ -86,9 +93,9 @@ namespace ADD2E_Core
                 Price = { Copper = 5 },
                 Consumeable = true
             };
-            Gotrek.Equipment.Add(Cheese);
+            return Item;
         }
 
-        
+
     }
 }

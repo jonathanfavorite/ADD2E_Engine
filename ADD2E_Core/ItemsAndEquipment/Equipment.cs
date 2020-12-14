@@ -14,5 +14,10 @@ namespace ADD2E_Core.ItemsAndEquipment
         public Money Price { get; set; } = new Money();
         public bool Weareable { get; set; } = false;
         public bool Consumeable { get; set; } = false;
+
+        public void CreateItem()
+        {
+
+        }
     }
 }

@@ -10,13 +10,13 @@ using ADD2E_Core.General;
 using ADD2E_Core.General.Dice;
 using ADD2E_Core.ItemsAndEquipment;
 using ADD2E_Core.Combat;
-namespace ADD2E_Core.PlayerCharacter
+namespace ADD2E_Core.Characters
 {
-    public class Player
+    public class Character
     {
         #region Setup Base Variables
+        public int? PlayerID { get; set; } = null;
         public string Name { get; set; }
-        public string OwnerName { get; set; } = "NoOwnerShip";
         public ERaces RaceType { get; set; }
         public IRace Race { get; set; }
         public EClasses ClassType { get; set; }
@@ -24,8 +24,8 @@ namespace ADD2E_Core.PlayerCharacter
 
         public bool RandomizeStats = false;
         public int HitPoints { get; set; } = 0;
-        public int ArmorClass { get; set; } = 0;
-        public List<IEquipment> Equipment { get; set; } = new List<IEquipment>();
+        public int ArmorClass { get; set; } = 10;
+        public List<IEquipment> Equipment { get; private set; } = new List<IEquipment>();
         public AbilityScores AbilityScores { get; set; } = new AbilityScores();
         public int Level { get; set; } = 1;
         public ThacoScore Thaco { get; set; }
@@ -34,7 +34,7 @@ namespace ADD2E_Core.PlayerCharacter
 
         private AbilityScoreRules abilityScoreRules = new AbilityScoreRules();
         #endregion
-        public Player()
+        public Character()
         {
 
         }
@@ -158,6 +158,16 @@ namespace ADD2E_Core.PlayerCharacter
         public void SetupThaco()
         {
             Thaco = new ThacoScore { ClassGroup = Class.ClassGroup, Level = Level, Value = 20 };
+        }
+        #endregion
+
+        #region Inventory 
+        public void AddItem(IEquipment item, int quantity)
+        {
+            for(int i = 0; i <= quantity - 1; i++)
+            {
+                Equipment.Add(item);
+            }
         }
         #endregion
 

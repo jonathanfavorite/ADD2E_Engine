@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ADD2E_Core.PlayerCharacter;
+using ADD2E_Core.Characters;
 using ADD2E_Core.Classes;
 using ADD2E_Core.Races;
 using System.Linq;

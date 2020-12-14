@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ADD2E_Core.General;
 using ADD2E_Core.Races;
-using ADD2E_Core.PlayerCharacter;
+using ADD2E_Core.Characters;
 using ADD2E_Core.Classes.List.FighterDetails;
 using ADD2E_Core.Combat;
 namespace ADD2E_Core.Classes.List
@@ -26,7 +26,7 @@ namespace ADD2E_Core.Classes.List
             AllowedRaces.Add(ERaces.All);
             ExperienceLevels = FormatExperienceLevels();
         }
-        public int CalculateHitDie(Player player)
+        public int CalculateHitDie(Character player)
         {
             return 0;
         }
@@ -51,7 +51,7 @@ namespace ADD2E_Core.Classes.List
             };
             return returnFighterExpLevels;
         }
-        public int MeleeAttacksPerRound(Player player)
+        public int MeleeAttacksPerRound(Character player)
         {
             int AtkPerRound = 1;
             if (player.Level <= 6)
