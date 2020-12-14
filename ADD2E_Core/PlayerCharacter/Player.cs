@@ -9,6 +9,7 @@ using ADD2E_Core.Races.List;
 using ADD2E_Core.General;
 using ADD2E_Core.General.Dice;
 using ADD2E_Core.ItemsAndEquipment;
+using ADD2E_Core.Combat;
 namespace ADD2E_Core.PlayerCharacter
 {
     public class Player
@@ -20,24 +21,38 @@ namespace ADD2E_Core.PlayerCharacter
         public IRace Race { get; set; }
         public EClasses ClassType { get; set; }
         public IClass Class { get; set; }
-        public int HitPoints { get; set; }
+
+        public bool RandomizeStats = false;
+        public int HitPoints { get; set; } = 0;
+        public int ArmorClass { get; set; } = 0;
         public List<IEquipment> Equipment { get; set; } = new List<IEquipment>();
         public AbilityScores AbilityScores { get; set; } = new AbilityScores();
         public int Level { get; set; } = 1;
+        public ThacoScore Thaco { get; set; }
 
         private CharacterRules characterRules = new CharacterRules();
+
         private AbilityScoreRules abilityScoreRules = new AbilityScoreRules();
         #endregion
         public Player()
         {
 
         }
+
         public void CreateCharacter()
         {
             SetPlayerRace();
             setPlayerClass();
             SetupHitPoints();
-            UpdateAbilityScores();
+            SetupThaco();
+            if(RandomizeStats)
+            {
+                RandomizeAbilityScores();
+            }
+            else
+            {
+                UpdateAbilityScores();
+            }
         }
 
         #region HitPoints
@@ -57,8 +72,17 @@ namespace ADD2E_Core.PlayerCharacter
             {
                 for (int i = 0; i <= Level - 1; i++)
                 {
-                    DiceRoll Dice = new DiceRoll();
-                    returnHP += Dice.Roll(1, Class.HitDie).Total + AbilityScores.Constitution.HitPointAdjustment;
+                    int roll = 0;
+                    if (i != 0)
+                    {
+                        DiceRoll Dice = new DiceRoll();
+                        roll = Dice.Roll(1, Class.HitDie).Total + AbilityScores.Constitution.HitPointAdjustment;
+                    }
+                    else
+                    {
+                        roll = Class.HitDie;
+                    }
+                    returnHP += roll;
                 }
             }
             return returnHP;
@@ -108,15 +132,32 @@ namespace ADD2E_Core.PlayerCharacter
         }
         #endregion
 
-        #region Set Ability Scores
+        #region Set & Update Ability Scores
+        public void RandomizeAbilityScores()
+        {
+            DiceRoll dr = new DiceRoll();
+            AbilityScores.Strength = abilityScoreRules.SetStrength(dr.FourDSixDropTheLowest());
+            AbilityScores.Dexterity = abilityScoreRules.SetDexterity(dr.FourDSixDropTheLowest());
+            AbilityScores.Constitution = abilityScoreRules.SetConstitution(dr.FourDSixDropTheLowest());
+            AbilityScores.Intelligence = abilityScoreRules.SetIntelligence(dr.FourDSixDropTheLowest());
+            AbilityScores.Wisdom = abilityScoreRules.SetWisdom(dr.FourDSixDropTheLowest());
+            AbilityScores.Charisma = abilityScoreRules.SetCharisma(dr.FourDSixDropTheLowest());
+        }
         public void UpdateAbilityScores()
         {
-            AbilityScores.Strength = abilityScoreRules.SetStrength(18);
-            AbilityScores.Dexterity = abilityScoreRules.SetDexterity(16);
-            AbilityScores.Constitution = abilityScoreRules.SetConstitution(15);
-            AbilityScores.Intelligence = abilityScoreRules.SetIntelligence(14);
-            AbilityScores.Wisdom = abilityScoreRules.SetWisdom(13);
-            AbilityScores.Charisma = abilityScoreRules.SetCharisma(16);
+            AbilityScores.Strength = abilityScoreRules.SetStrength(AbilityScores.Strength.Value);
+            AbilityScores.Dexterity = abilityScoreRules.SetDexterity(AbilityScores.Dexterity.Value);
+            AbilityScores.Constitution = abilityScoreRules.SetConstitution(AbilityScores.Constitution.Value);
+            AbilityScores.Intelligence = abilityScoreRules.SetIntelligence(AbilityScores.Intelligence.Value);
+            AbilityScores.Wisdom = abilityScoreRules.SetWisdom(AbilityScores.Wisdom.Value);
+            AbilityScores.Charisma = abilityScoreRules.SetCharisma(AbilityScores.Charisma.Value);
+        }
+        #endregion
+
+        #region Thaco and AC
+        public void SetupThaco()
+        {
+            Thaco = new ThacoScore { ClassGroup = Class.ClassGroup, Level = Level, Value = 20 };
         }
         #endregion
 

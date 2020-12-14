@@ -29,14 +29,40 @@ namespace ADD2E_Core
                 OwnerName = "Jonathan",
                 ClassType = EClasses.Fighter,
                 Level = 5,
+                RandomizeStats = true
             };
             Felix.CreateCharacter();
-
-            Console.WriteLine("Created Player:");
-            Console.WriteLine("\tName: {0}", Felix.Name);
-            Console.WriteLine("\tRace: {0}", Felix.Race.Name);
-            Console.WriteLine("\tClass: {0}", Felix.Class.Name);
-            Console.WriteLine("\tLevel: {0}", Felix.Level);
+            
+            Console.WriteLine("Name: {0}", Felix.Name);
+            Console.WriteLine("Race: {0}", Felix.Race.Name);
+            Console.WriteLine("Class: {0}", Felix.Class.Name);
+            Console.WriteLine("Level: {0}", Felix.Level);
+            Console.WriteLine("HP: {0}", Felix.HitPoints);
+            Console.WriteLine();
+            ShowAbilityScores(Felix);
+            Console.WriteLine();
+        }
+        static void ShowAbilityScores(Player p)
+        {
+            Console.WriteLine($"-- Ability Scores --");
+            Console.WriteLine($"Strength:     {p.AbilityScores.Strength.Value} ({AbilityAdj(p.AbilityScores.Strength.HitProb)})");
+            Console.WriteLine($"Dexterity:    {p.AbilityScores.Dexterity.Value} ({AbilityAdj(p.AbilityScores.Dexterity.ReactionAdjustment)})");
+            Console.WriteLine($"Constitution: {p.AbilityScores.Constitution.Value} ({AbilityAdj(p.AbilityScores.Constitution.HitPointAdjustment)})");
+            Console.WriteLine($"Intelligence: {p.AbilityScores.Strength.Value}");
+            Console.WriteLine($"Widsom:       {p.AbilityScores.Wisdom.Value} ({AbilityAdj(p.AbilityScores.Wisdom.MagicalDefenceAdjustment)})");
+            Console.WriteLine($"Charisma:     {p.AbilityScores.Charisma.Value} ({AbilityAdj(p.AbilityScores.Charisma.ReactionAdjustment)})");
+        }
+        static string AbilityAdj(int adjustment)
+        {
+            string returnVal = adjustment.ToString();
+            if(!adjustment.ToString().Contains("-"))
+            {
+                if(adjustment != 0)
+                {
+                    returnVal = "+" + adjustment.ToString();
+                }
+            }
+            return returnVal;
         }
         static void RollDice(int amount, int sides)
         {
@@ -57,7 +83,8 @@ namespace ADD2E_Core
                 Type = EEquipmentType.Food,
                 Name = "Cheese",
                 Description = "Some slightly moldy cheese.",
-                Price = { Copper = 5 }
+                Price = { Copper = 5 },
+                Consumeable = true
             };
             Gotrek.Equipment.Add(Cheese);
         }

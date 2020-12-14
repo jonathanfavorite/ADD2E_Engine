@@ -5,6 +5,7 @@ using ADD2E_Core.General;
 using ADD2E_Core.Races;
 using ADD2E_Core.PlayerCharacter;
 using ADD2E_Core.Classes.List.FighterDetails;
+using ADD2E_Core.Combat;
 namespace ADD2E_Core.Classes.List
 {
     public class Fighter : IFighter
@@ -13,6 +14,8 @@ namespace ADD2E_Core.Classes.List
 
         public List<EAbilityScores> PrimeRequirement { get; set; } = new List<EAbilityScores>();
         public int HitDie { get; set; } = 10;
+
+        public EClassGroup ClassGroup { get; set; } = EClassGroup.Warrior;
         public List<ERaces> AllowedRaces { get; set; } = new List<ERaces>();
         public Dictionary<EAbilityScores, int> MinimumAbilityScoreRequirements { get; set; } = new Dictionary<EAbilityScores, int>();
         public List<FighterExperienceLevels> ExperienceLevels { get; set; }

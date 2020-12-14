@@ -5,6 +5,7 @@ using ADD2E_Core.General;
 using ADD2E_Core.Races;
 using ADD2E_Core.PlayerCharacter;
 using ADD2E_Core.Classes.List.FighterDetails;
+using ADD2E_Core.Combat;
 namespace ADD2E_Core.Classes
 {
     public interface IClass
@@ -15,6 +16,7 @@ namespace ADD2E_Core.Classes
         List<ERaces> AllowedRaces { get; set; }
         Dictionary<EAbilityScores, int> MinimumAbilityScoreRequirements { get; set; }
         List<FighterExperienceLevels> ExperienceLevels { get; set; }
+        EClassGroup ClassGroup { get; set; }
 
     }
 }
