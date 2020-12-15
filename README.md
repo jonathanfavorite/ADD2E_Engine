@@ -4,14 +4,15 @@
 <p>A detailed and easy-to-use C# engine for game development.</p>
 <h3>Creating a new PC (Player Character)</h3>
 <pre>
-Player Felix = new Player
+Character Felix = new Character
 {
     Name = "Felix",
     RaceType = ERaces.Human,
-    OwnerName = "Jonathan",
     ClassType = EClasses.Fighter,
-    Level = 1,
+    Level = 5,
+    RandomizeStats = true,
 };
+Felix.CreateCharacter();
 </pre>
 <h3>Rolling Dice</h3>
 <pre>
@@ -40,4 +41,17 @@ Equipment Cheese = new Equipment
     Price = { Copper = 5 }
 };
 Gotrek.Equipment.Add(Cheese);
+</pre>
+<h3>Creating / Adding Weapon</h3>
+<pre>
+Weapon BastardSword = new Weapon
+{
+    Name = "Bastard Sword",
+    AttackType = EWeaponAttackType.S,
+    Category = EWeaponCategory.BastardSwordTwoHanded,
+    TwoHanded = true,
+    Price = { Gold = 1},
+    Weight = 10
+};
+Felix.PrimaryWeapon = BastardSword;
 </pre>
