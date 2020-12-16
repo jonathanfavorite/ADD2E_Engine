@@ -33,10 +33,10 @@ namespace ADD2E_Core.Services
         public int FourDSixDropTheLowest()
         {
             List<int> rolls = new List<int>();
+            Random r = new Random();
             for (int i = 0; i <= 3; i++)
             {
-                Random r = new Random();
-                rolls.Add(r.Next(1, 6));
+                rolls.Add(r.Next(1, 7));
                 //rolls.Add(6); //for testing
             }
             return rolls.OrderByDescending(x => x).Take(rolls.Count() - 1).Sum();

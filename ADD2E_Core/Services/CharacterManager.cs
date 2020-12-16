@@ -91,27 +91,32 @@ namespace ADD2E_Core.Services
         #endregion
 
         #region Ability Scores
-        /*
-        public void RandomizeAbilityScores(AbilityScores abilityScores)
+        
+        public AbilityScores RandomizeAbilityScores(AbilityScores abilityScores)
         {
-            DiceRoll dr = new DiceRoll();
+            
+            DiceManager dr = new DiceManager();
+            AbilityScoreManager abilityScoreRules = new AbilityScoreManager();
             abilityScores.Strength = abilityScoreRules.SetStrength(dr.FourDSixDropTheLowest());
             abilityScores.Dexterity = abilityScoreRules.SetDexterity(dr.FourDSixDropTheLowest());
             abilityScores.Constitution = abilityScoreRules.SetConstitution(dr.FourDSixDropTheLowest());
             abilityScores.Intelligence = abilityScoreRules.SetIntelligence(dr.FourDSixDropTheLowest());
             abilityScores.Wisdom = abilityScoreRules.SetWisdom(dr.FourDSixDropTheLowest());
             abilityScores.Charisma = abilityScoreRules.SetCharisma(dr.FourDSixDropTheLowest());
+            return abilityScores;
         }
-        public void UpdateAbilityScores()
+        public AbilityScores UpdateAbilityScores(AbilityScores abilityScores)
         {
-            AbilityScores.Strength = abilityScoreRules.SetStrength(AbilityScores.Strength.Value);
-            AbilityScores.Dexterity = abilityScoreRules.SetDexterity(AbilityScores.Dexterity.Value);
-            AbilityScores.Constitution = abilityScoreRules.SetConstitution(AbilityScores.Constitution.Value);
-            AbilityScores.Intelligence = abilityScoreRules.SetIntelligence(AbilityScores.Intelligence.Value);
-            AbilityScores.Wisdom = abilityScoreRules.SetWisdom(AbilityScores.Wisdom.Value);
-            AbilityScores.Charisma = abilityScoreRules.SetCharisma(AbilityScores.Charisma.Value);
+            AbilityScoreManager abilityScoreRules = new AbilityScoreManager();
+            abilityScores.Strength = abilityScoreRules.SetStrength(abilityScores.Strength.Value);
+            abilityScores.Dexterity = abilityScoreRules.SetDexterity(abilityScores.Dexterity.Value);
+            abilityScores.Constitution = abilityScoreRules.SetConstitution(abilityScores.Constitution.Value);
+            abilityScores.Intelligence = abilityScoreRules.SetIntelligence(abilityScores.Intelligence.Value);
+            abilityScores.Wisdom = abilityScoreRules.SetWisdom(abilityScores.Wisdom.Value);
+            abilityScores.Charisma = abilityScoreRules.SetCharisma(abilityScores.Charisma.Value);
+            return abilityScores;
         }
-        */
+        
         #endregion
 
     }

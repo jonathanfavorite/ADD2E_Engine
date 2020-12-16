@@ -40,6 +40,14 @@ namespace ADD2E_Core.Models
                 LevelInfo = classManager.getExperienceLevels(ClassType, Level);
                 NextLevelInfo = classManager.getExperienceLevels(ClassType, Level + 1);
                 HitPoints = characterManager.SetHitPoints(Level, Class, AbilityScores);
+                if(RandomizeStats)
+                {
+                    AbilityScores = characterManager.RandomizeAbilityScores(AbilityScores);
+                }
+                else
+                {
+                    AbilityScores = characterManager.UpdateAbilityScores(AbilityScores);
+                }
             }
             else
             {
@@ -53,41 +61,11 @@ namespace ADD2E_Core.Models
              *
             SetupThaco();
             Equipment.Add(PrimaryWeapon);
-            if(RandomizeStats)
-            {
-                RandomizeAbilityScores();
-            }
-            else
-            {
-                UpdateAbilityScores();
-            }
              */
         }
 
         /*
-        
-        #region Set & Update Ability Scores
-        public void RandomizeAbilityScores()
-        {
-            DiceRoll dr = new DiceRoll();
-            AbilityScores.Strength = abilityScoreRules.SetStrength(dr.FourDSixDropTheLowest());
-            AbilityScores.Dexterity = abilityScoreRules.SetDexterity(dr.FourDSixDropTheLowest());
-            AbilityScores.Constitution = abilityScoreRules.SetConstitution(dr.FourDSixDropTheLowest());
-            AbilityScores.Intelligence = abilityScoreRules.SetIntelligence(dr.FourDSixDropTheLowest());
-            AbilityScores.Wisdom = abilityScoreRules.SetWisdom(dr.FourDSixDropTheLowest());
-            AbilityScores.Charisma = abilityScoreRules.SetCharisma(dr.FourDSixDropTheLowest());
-        }
-        public void UpdateAbilityScores()
-        {
-            AbilityScores.Strength = abilityScoreRules.SetStrength(AbilityScores.Strength.Value);
-            AbilityScores.Dexterity = abilityScoreRules.SetDexterity(AbilityScores.Dexterity.Value);
-            AbilityScores.Constitution = abilityScoreRules.SetConstitution(AbilityScores.Constitution.Value);
-            AbilityScores.Intelligence = abilityScoreRules.SetIntelligence(AbilityScores.Intelligence.Value);
-            AbilityScores.Wisdom = abilityScoreRules.SetWisdom(AbilityScores.Wisdom.Value);
-            AbilityScores.Charisma = abilityScoreRules.SetCharisma(AbilityScores.Charisma.Value);
-        }
-        #endregion
-
+      
         #region Thaco and AC
         public void SetupThaco()
         {

@@ -4,13 +4,15 @@ using System.Threading.Tasks;
 using ADD2E_Core.Models;
 using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
+using ADD2E_Core.Services;
 namespace ADD2E_Core
 {
     public class Program
     {
+        private static UITestingManager UIManager;
         static async Task Main(string[] args)
         {
-
+            UIManager = new UITestingManager();
             PlayerCharacter Felix = new PlayerCharacter
             {
                 Name = "Felix",
@@ -22,15 +24,24 @@ namespace ADD2E_Core
             };
             Felix.CreateCharacter();
 
-            GetTypeAndString(Felix, Felix.Name);
+            Equipment Cheese = new Equipment
+            {
+                Name = "Cheese",
+                Description = "Some slightly moldy cheese.",
+                Price = { Copper = 5 },
+                Consumeable = true,
+                Type = EquipmentType.Food
+            };
+
+            UIManager.GetTypeAndDisplayString(Felix, Felix.Name);
+            UIManager.GetTypeAndDisplayString(Cheese, Cheese.Name);
+
+            UIManager.ShowAbilityScores(Felix);
 
             Console.ReadLine();
         }
 
-        static void GetTypeAndString(object o, string displayName = "")
-        {
-            Console.WriteLine($"({o.GetType()}) {displayName}");
-        }
+       
       
     }
 }
