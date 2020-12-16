@@ -6,12 +6,13 @@ using ADD2E_Core.Enums;
 using ADD2E_Core.Services;
 namespace ADD2E_Core.Models
 {
-    public class PlayerCharacter : ICharacter
+    public class PlayerCharacter : IPlayerCharacter
     {
         public int? PlayerID { get; set; } = null;
+        public string OwnerName { get; set; }
         public string Name { get; set; }
         public int Level { get; set; } = 1;
-        public int HitPoints { get; set; } = 0;
+        public int? HitPoints { get; set; } = null;
         public int ArmorClass { get; set; } = 10;
         public bool RandomizeStats { get; set; } = false;
         public IRace Race { get; set; }
@@ -19,18 +20,18 @@ namespace ADD2E_Core.Models
         public IClass Class { get; set; }
         public ThacoScore Thaco { get; set; }
         public AbilityScores AbilityScores { get; set; } = new AbilityScores();
-        public List<IEquipment> Equipment { get; private set; } = new List<IEquipment>();
+        public List<IEquipment> Equipment { get; set; } = new List<IEquipment>();
         public IWeapon PrimaryWeapon { get; set; }
         public ClassExperienceLevel LevelInfo { get; set; }
         public ClassExperienceLevel NextLevelInfo { get; set; }
         public int Experience { get; set; } = 0;
 
+        private CharacterManager characterManager = new CharacterManager();
         public RaceType RaceType { get; set; }
         public ClassType ClassType { get; set; }
 
         public void CreateCharacter()
         {
-            CharacterManager characterManager = new CharacterManager();
             ClassManager classManager = new ClassManager();
 
             Race = characterManager.SetPlayerRace(RaceType);
@@ -39,7 +40,8 @@ namespace ADD2E_Core.Models
                 Class = characterManager.setCharacterClass(ClassType);
                 LevelInfo = classManager.getExperienceLevels(ClassType, Level);
                 NextLevelInfo = classManager.getExperienceLevels(ClassType, Level + 1);
-                HitPoints = characterManager.SetHitPoints(Level, Class, AbilityScores);
+                HitPoints = characterManager.SetHitPoints(Level, Class, AbilityScores, HitPoints);
+                Thaco = characterManager.SetupThaco(Class.ClassGroup, Level);
                 if(RandomizeStats)
                 {
                     AbilityScores = characterManager.RandomizeAbilityScores(AbilityScores);
@@ -54,48 +56,28 @@ namespace ADD2E_Core.Models
                 string expMessage = string.Format("{0} cannot be a {1}", Race.ToString(), ClassType.ToString());
                 throw new Exception(expMessage);
             }
-           
-            /*
-             * 
-             *
-             *
-            SetupThaco();
-            Equipment.Add(PrimaryWeapon);
-             */
         }
 
-        /*
-      
-        #region Thaco and AC
-        public void SetupThaco()
+        public void AddItem(IEquipment Item, int Quantity = 1)
         {
-            Thaco = new ThacoScore { ClassGroup = Class.ClassGroup, Level = Level, Value = 20 };
-        }
-        #endregion
-
-        #region Inventory 
-        public void AddItem(IEquipment item, int quantity = 1)
-        {
-            for(int i = 0; i <= quantity - 1; i++)
+            var addedItems = characterManager.AddItem(Item, Quantity);
+            foreach(IEquipment item in addedItems)
             {
-                Random r = new Random();
-                IEquipment thisItem = item;
-                thisItem.ItemID = item.Type.ToString() + "_" + r.Next(1, 99999);
-                Equipment.Add(thisItem);
+                Equipment.Add(item);
             }
         }
-        public void RemoveItem(IEquipment item, int quantity = 1)
+        public void RemoveItem(IEquipment Item, int Quantity = 1)
         {
-            // Search to see if it exists
-            var searchItem = Equipment.FindAll(x => x.Name == item.Name).ToList();
-            if(searchItem.Count() <= quantity) { quantity = searchItem.Count();  }
-            for (int i = 0; i <= quantity - 1; i++)
-            {
-                Equipment.Remove(searchItem[i]);
-            }
+            Equipment = characterManager.RemoveItem(Item, Quantity, Equipment);
         }
-        #endregion
-        */
+        public void AddMoney(Money m)
+        {
+            CoinPurse = characterManager.AddMoney(CoinPurse, m);
+        }
+        public void RemoveMoney(Money m)
+        {
+            CoinPurse = characterManager.RemoveMoney(CoinPurse, m);
+        }
 
     }
 }

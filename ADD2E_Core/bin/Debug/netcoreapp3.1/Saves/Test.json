@@ -1,0 +1,97 @@
+{
+  "PlayerID": null,
+  "Name": "Test",
+  "Level": 10,
+  "HitPoints": 54,
+  "ArmorClass": 10,
+  "RandomizeStats": true,
+  "Race": {
+    "Name": "Human",
+    "PlayableClasses": [
+      "Fighter",
+      "Priest",
+      "Ranger",
+      "Wizard"
+    ]
+  },
+  "CoinPurse": {
+    "Copper": 10,
+    "Silver": 25,
+    "Gold": 100
+  },
+  "Class": {
+    "Name": "Fighter",
+    "PrimeRequirement": [],
+    "HitDie": 10,
+    "ClassGroup": "Warrior",
+    "AllowedRaces": [],
+    "MinimumAbilityScoreRequirements": {}
+  },
+  "Thaco": null,
+  "AbilityScores": {
+    "Strength": {
+      "Name": "Strength",
+      "Value": 9,
+      "HitProb": 0,
+      "MaxPress": 90,
+      "OpenDoors": 5,
+      "DamageAdjustment": 0,
+      "BendBarsPercentage": 0.01
+    },
+    "Dexterity": {
+      "Name": "Dextarity",
+      "Value": 13,
+      "ReactionAdjustment": 0,
+      "MissleAttackAdjustment": 0,
+      "DefenceAdjustment": 0
+    },
+    "Constitution": {
+      "Name": "Constitution",
+      "Value": 12,
+      "HitPointAdjustment": 0,
+      "SystemShockPercentage": 0.8,
+      "ResurrectionSurvivalPercentage": 0.85,
+      "PoisionSave": 0,
+      "WarriorsHPBonus": 0
+    },
+    "Intelligence": {
+      "Name": "Intelligence",
+      "Value": 11,
+      "LanguagesKnown": 2,
+      "SpellLevel": 5,
+      "ChanceToLearnSpellPercentage": 0.45,
+      "MaxNumberOfSpells": 7
+    },
+    "Wisdom": {
+      "Name": "Wisdom",
+      "Value": 16,
+      "MagicalDefenceAdjustment": 2,
+      "BonusSpells": 2,
+      "ChanceOfSpellFailPercentage": 0.0
+    },
+    "Charisma": {
+      "Name": "Charisma",
+      "Value": 13,
+      "MaximumHenchmen": 5,
+      "LoyaltyBase": 0,
+      "ReactionAdjustment": 1
+    }
+  },
+  "Equipment": [],
+  "PrimaryWeapon": null,
+  "LevelInfo": {
+    "Level": 10,
+    "Experience": 500000,
+    "HitDiceAmount": 10,
+    "HitDiceBonus": 3
+  },
+  "NextLevelInfo": {
+    "Level": 11,
+    "Experience": 750000,
+    "HitDiceAmount": 11,
+    "HitDiceBonus": 6
+  },
+  "Experience": 0,
+  "RaceType": "Human",
+  "ClassType": "Fighter"
+}

@@ -38,5 +38,22 @@ namespace ADD2E_Core.Services
             int conversionMath = (m.Gold * 10000) + (m.Silver * 100) + m.Copper;
             return conversionMath;
         }
+        public Money addMoney(Money coinPurse, Money newMoney)
+        {
+            coinPurse.Copper += newMoney.Copper;
+            coinPurse.Silver += newMoney.Silver;
+            coinPurse.Gold += newMoney.Gold;
+            return coinPurse;
+        }
+        public Money removeMoney(Money coinPurse, Money newMoney)
+        {
+            coinPurse.Copper -= newMoney.Copper;
+                if (coinPurse.Copper <= 0) { coinPurse.Copper = 0; }
+            coinPurse.Silver -= newMoney.Silver;
+                if (coinPurse.Silver <= 0) { coinPurse.Silver = 0; }
+            coinPurse.Gold -= newMoney.Gold;
+                if (coinPurse.Gold <= 0) { coinPurse.Gold = 0; }
+            return coinPurse;
+        }
     }
 }

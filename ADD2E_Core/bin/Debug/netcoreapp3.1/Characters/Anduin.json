@@ -1,0 +1,99 @@
+{
+  "PlayerID": null,
+  "Name": "Anduin",
+  "Level": 10,
+  "HitPoints": 53,
+  "ArmorClass": 10,
+  "RandomizeStats": true,
+  "Race": {
+    "$type": "ADD2E_Core.Models.Human, ADD2E_Core",
+    "Name": "Human",
+    "PlayableClasses": [
+      1,
+      6,
+      5,
+      3
+    ]
+  },
+  "CoinPurse": {
+    "Copper": 10,
+    "Silver": 25,
+    "Gold": 100
+  },
+  "Class": {
+    "$type": "ADD2E_Core.Models.Fighter, ADD2E_Core",
+    "Name": "Fighter",
+    "PrimeRequirement": [],
+    "HitDie": 10,
+    "ClassGroup": 2,
+    "AllowedRaces": [],
+    "MinimumAbilityScoreRequirements": {}
+  },
+  "Thaco": null,
+  "AbilityScores": {
+    "Strength": {
+      "Name": 0,
+      "Value": 17,
+      "HitProb": 1,
+      "MaxPress": 220,
+      "OpenDoors": 10,
+      "DamageAdjustment": 1,
+      "BendBarsPercentage": 0.13
+    },
+    "Dexterity": {
+      "Name": 1,
+      "Value": 16,
+      "ReactionAdjustment": 1,
+      "MissleAttackAdjustment": 1,
+      "DefenceAdjustment": -2
+    },
+    "Constitution": {
+      "Name": 2,
+      "Value": 13,
+      "HitPointAdjustment": 0,
+      "SystemShockPercentage": 0.85,
+      "ResurrectionSurvivalPercentage": 0.9,
+      "PoisionSave": 0,
+      "WarriorsHPBonus": 0
+    },
+    "Intelligence": {
+      "Name": 5,
+      "Value": 13,
+      "LanguagesKnown": 3,
+      "SpellLevel": 6,
+      "ChanceToLearnSpellPercentage": 0.55,
+      "MaxNumberOfSpells": 9
+    },
+    "Wisdom": {
+      "Name": 3,
+      "Value": 11,
+      "MagicalDefenceAdjustment": 0,
+      "BonusSpells": 0,
+      "ChanceOfSpellFailPercentage": 0.1
+    },
+    "Charisma": {
+      "Name": 4,
+      "Value": 9,
+      "MaximumHenchmen": 4,
+      "LoyaltyBase": 0,
+      "ReactionAdjustment": 0
+    }
+  },
+  "Equipment": [],
+  "PrimaryWeapon": null,
+  "LevelInfo": {
+    "Level": 10,
+    "Experience": 500000,
+    "HitDiceAmount": 10,
+    "HitDiceBonus": 3
+  },
+  "NextLevelInfo": {
+    "Level": 11,
+    "Experience": 750000,
+    "HitDiceAmount": 11,
+    "HitDiceBonus": 6
+  },
+  "Experience": 0,
+  "RaceType": 1,
+  "ClassType": 1
+}

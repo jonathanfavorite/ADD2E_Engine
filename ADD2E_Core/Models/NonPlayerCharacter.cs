@@ -4,12 +4,12 @@ using System.Text;
 using ADD2E_Core.Interfaces;
 namespace ADD2E_Core.Models
 {
-    public class NonPlayerCharacter : ICharacter
+    public class NonPlayerCharacter
     {
         public int? PlayerID { get; set; } = null;
         public string Name { get; set; }
         public int Level { get; set; } = 1;
-        public int HitPoints { get; set; } = 0;
+        public int? HitPoints { get; set; } = 0;
         public int ArmorClass { get; set; } = 10;
         public bool RandomizeStats { get; set; } = false;
 

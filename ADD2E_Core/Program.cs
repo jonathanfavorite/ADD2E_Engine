@@ -13,15 +13,26 @@ namespace ADD2E_Core
         static async Task Main(string[] args)
         {
             UIManager = new UITestingManager();
+
             PlayerCharacter Felix = new PlayerCharacter
             {
-                Name = "Felix",
+                Name = "Anduin",
                 Level = 10,
                 RaceType = RaceType.Human,
                 ClassType = ClassType.Fighter,
-                CoinPurse = { Gold = 100, Silver = 25, Copper = 10 },
-                RandomizeStats = true
+                CoinPurse = { Gold = 100, Silver = 2005, Copper = 410 },
+                AbilityScores =
+                {
+                    Strength = { Value = 18 },
+                    Intelligence = { Value = 18 },
+                    Constitution = { Value = 18 },
+                    Charisma = { Value = 18 },
+                    Dexterity = { Value = 18 },
+                    Wisdom = { Value = 18 }
+                },
+                HitPoints = 100
             };
+
             Felix.CreateCharacter();
 
             Equipment Cheese = new Equipment
@@ -33,10 +44,12 @@ namespace ADD2E_Core
                 Type = EquipmentType.Food
             };
 
-            UIManager.GetTypeAndDisplayString(Felix, Felix.Name);
-            UIManager.GetTypeAndDisplayString(Cheese, Cheese.Name);
+            Felix.AddItem(Cheese,50);
 
             UIManager.ShowAbilityScores(Felix);
+            UIManager.ShowEquipmentForCharacter(Felix);
+            UIManager.ShowCoinPurse(Felix);
+
 
             Console.ReadLine();
         }
