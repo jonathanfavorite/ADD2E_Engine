@@ -9,6 +9,7 @@ namespace ADD2E_Core.Enums
         All,
         Human,
         Elf,
+        HalfElf,
         Dwarf
     }
 }
