@@ -37,7 +37,6 @@ namespace ADD2E_Core.Services
             for (int i = 0; i <= 3; i++)
             {
                 rolls.Add(r.Next(1, 7));
-                //rolls.Add(6); //for testing
             }
             return rolls.OrderByDescending(x => x).Take(rolls.Count() - 1).Sum();
         }
