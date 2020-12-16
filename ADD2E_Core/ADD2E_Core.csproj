@@ -6,8 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Saves\" />
-    <Folder Include="SavingThrowRules\" />
+    <Compile Remove="Saves\**" />
+    <Compile Remove="SavingThrowRules\**" />
+    <EmbeddedResource Remove="Saves\**" />
+    <EmbeddedResource Remove="SavingThrowRules\**" />
+    <None Remove="Saves\**" />
+    <None Remove="SavingThrowRules\**" />
   </ItemGroup>
 
   <ItemGroup>
