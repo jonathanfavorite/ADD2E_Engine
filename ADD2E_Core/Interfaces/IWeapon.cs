@@ -9,6 +9,7 @@ namespace ADD2E_Core.Interfaces
         WeaponCategory Category { get; set; }
         int Weight { get; set; }
         WeaponAttackType AttackType { get; set; }
+        EquipmentSlot SlotType { get; set; }
         WeaponSize Size { get; set; }
         int SpeedFactor { get; set; }
         bool TwoHanded { get; set; }

@@ -15,17 +15,18 @@ namespace ADD2E_Core.Models
         public WeaponSize Size { get; set; }
         public int SpeedFactor { get; set; }
         public string ItemID { get; set; } = null;
-        public EquipmentType Type { get; set; } = EquipmentType.Misc;
+        public EquipmentType EquipmentType { get; set; } = EquipmentType.Misc;
+        public EquipmentSlot SlotType { get; set; }
         public string Description { get; set; } = string.Empty;
         public bool Weareable { get; set; } = false;
         public bool Consumeable { get; set; } = false;
-
+        public bool Equipped { get; set; } = false;
         public bool TwoHanded { get; set; } = false;
 
         public void CreateItem()
         {
             Random r = new Random();
-            ItemID = Type.ToString() + "_" + r.Next(1, 99999);
+            ItemID = EquipmentType.ToString() + "_" + r.Next(1, 99999);
         }
     }
 }

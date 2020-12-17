@@ -136,7 +136,6 @@ namespace ADD2E_Core.Services
         }
         #endregion
 
-        
         #region Inventory 
         public List<IEquipment> AddItem(IEquipment item, int quantity = 1)
         {
@@ -145,7 +144,7 @@ namespace ADD2E_Core.Services
             {
                 Random r = new Random();
                 IEquipment thisItem = item;
-                thisItem.ItemID = item.Type.ToString() + "_" + r.Next(1, 99999);
+                thisItem.ItemID = item.ToString() + "_" + r.Next(1, 99999);
                 returnEquipment.Add(thisItem);
             }
             return returnEquipment;
@@ -174,7 +173,17 @@ namespace ADD2E_Core.Services
         }
 
         #endregion
-        
+
+        #region Weapons
+        public List<IEquipment> NoLongerEquipped(IEquipment item, List<IEquipment> allItems)
+        {
+            if (item != null)
+            {
+                allItems.First(x => x == item).Equipped = false;
+            }
+            return allItems;
+        }
+        #endregion
 
     }
 }

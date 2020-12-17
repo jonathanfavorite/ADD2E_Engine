@@ -21,7 +21,9 @@ namespace ADD2E_Core.Models
         public ThacoScore Thaco { get; set; }
         public AbilityScores AbilityScores { get; set; } = new AbilityScores();
         public List<IEquipment> Equipment { get; set; } = new List<IEquipment>();
-        public IWeapon PrimaryWeapon { get; set; }
+        public IWeapon PrimaryWeapon { get; set; } = null;
+        public IWeapon SecondaryWeapon { get; set; } = null;
+        public List<IEquipment> EquippedGear { get; set; } = new List<IEquipment>();
         public ClassExperienceLevel LevelInfo { get; set; }
         public ClassExperienceLevel NextLevelInfo { get; set; }
         public int Experience { get; set; } = 0;
@@ -77,6 +79,41 @@ namespace ADD2E_Core.Models
         public void RemoveMoney(Money m)
         {
             CoinPurse = characterManager.RemoveMoney(CoinPurse, m);
+        }
+
+
+        public void EquipItem(object item)
+        {
+            if (item is IWeapon)
+            {
+                EquipPrimary((IWeapon)item);
+            }
+            else if(item is IGear)
+            {
+                EquipGear((IGear)item);
+            }
+            else
+            {
+                string exceptionMsg = string.Format($"Item is not a weapon or piece of gear.");
+                throw new Exception(exceptionMsg);
+            }
+        }
+        private void EquipPrimary(IWeapon item)
+        {
+            if (item.SlotType == EquipmentSlot.PRIMARY)
+            {
+                Equipment = characterManager.NoLongerEquipped(item, Equipment);
+                PrimaryWeapon = item;
+            }
+            else
+            {
+                string exceptionMsg = string.Format($"{item.Name} is not a primary weapon.");
+                throw new Exception();
+            }
+        }
+        private void EquipGear(IGear item)
+        {
+            EquippedGear.Add(item);
         }
 
     }

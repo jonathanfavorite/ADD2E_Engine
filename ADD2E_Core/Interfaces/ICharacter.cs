@@ -25,6 +25,8 @@ namespace ADD2E_Core.Interfaces
         public int Experience { get; set; } 
         RaceType RaceType { get; set; }
         ClassType ClassType { get; set; }
+        IWeapon SecondaryWeapon { get; set; }
+        List<IEquipment> EquippedGear { get; set; }
         void CreateCharacter();
         void AddItem(IEquipment item, int quantity);
         void RemoveItem(IEquipment item, int quantity);

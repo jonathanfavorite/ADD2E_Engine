@@ -77,6 +77,7 @@ namespace ADD2E_Core.Enums
         TwoHandedSword,
         Trident,
         Warhammer,
-        Whip
+        Whip,
+        Shield
     }
 }

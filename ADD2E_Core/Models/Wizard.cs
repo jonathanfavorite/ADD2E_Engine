@@ -9,7 +9,7 @@ namespace ADD2E_Core.Models
     {
         public string Name { get; set; } = "Wizard";
         public List<AbilityScoreType> PrimeRequirement { get; set; } = new List<AbilityScoreType>();
-        public int HitDie { get; set; } = 10;
+        public int HitDie { get; set; } = 4;
         public ClassGroup ClassGroup { get; set; } = ClassGroup.Wizard;
         public List<RaceType> AllowedRaces { get; set; } = new List<RaceType>();
         public Dictionary<AbilityScoreType, int> MinimumAbilityScoreRequirements { get; set; } = new Dictionary<AbilityScoreType, int>();

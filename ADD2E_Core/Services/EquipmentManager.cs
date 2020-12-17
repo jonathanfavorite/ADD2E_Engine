@@ -15,6 +15,7 @@ namespace ADD2E_Core.Services
         {
             equipment = e;
         }
+
         public List<string> DisplayAllEquipmentByQuantity()
         {
             List<string> returnString = new List<string>();
@@ -25,7 +26,7 @@ namespace ADD2E_Core.Services
                 Money addQuantityAmount = FormatMoney(item.Price, quantity);
                 Money formattedQuanaityPrice = moneyManager.CalculateMoney(addQuantityAmount);
                 string formattedPrice = string.Format("{0}g {1}s {2}c", formattedQuanaityPrice.Gold, formattedQuanaityPrice.Silver, formattedQuanaityPrice.Copper);
-                string formattedItem = string.Format("({0}) {1}      {2}", quantity, item.Name, formattedPrice);
+                string formattedItem = string.Format("({0}) {1} ({2})", quantity, item.Name, formattedPrice);
                 returnString.Add(formattedItem);
             }
             return returnString;
