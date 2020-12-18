@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ADD2E_Core.Enums;
+using ADD2E_Core.Models;
 namespace ADD2E_Core.Interfaces
 {
     public interface IWeapon : IEquipment
@@ -13,5 +14,6 @@ namespace ADD2E_Core.Interfaces
         WeaponSize Size { get; set; }
         int SpeedFactor { get; set; }
         bool TwoHanded { get; set; }
+        WeaponDamage Damage { get; set; }
     }
 }

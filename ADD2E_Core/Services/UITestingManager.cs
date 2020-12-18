@@ -25,7 +25,7 @@ namespace ADD2E_Core.Services
             Console.WriteLine($" Race: {p.Race.Name}");
             Console.WriteLine($" Level: {p.Level}");
             Console.WriteLine($" Experience: {p.LevelInfo.Experience} / {p.NextLevelInfo.Experience}");
-            Console.WriteLine($" HP: {p.HitPoints}");
+            Console.WriteLine($" HP: {p.HitPoints} / {p.TmpHitPoints}");
 
             if (detailed)
             {
@@ -33,7 +33,7 @@ namespace ADD2E_Core.Services
                 ShowEquipmentForCharacter(p);
                 ShowTotalVendoredAmount(p);
                 ShowCoinPurse(p);
-                ShowPrimaryWeapon(p);
+                //ShowPrimaryWeapon(p);
                 ShowEquippedGear(p);
             }
         }
@@ -71,19 +71,10 @@ namespace ADD2E_Core.Services
                 Console.WriteLine($" {item}");
             }
         }
-        public void ShowCoinPurse(ICharacter p, bool formatted = false)
+        public void ShowCoinPurse(ICharacter p)
         {
             Console.WriteLine($"\r\n-- {p.Name}'s Coin Purse --");
-            if (formatted)
-            {
-                MoneyManager mManager = new MoneyManager();
-                Money FMoney = mManager.CalculateMoney(p.CoinPurse);
-                Console.WriteLine($" {FMoney.Gold}g {FMoney.Silver}s {FMoney.Copper}c");
-            }
-            else
-            {
-                Console.WriteLine($" {p.CoinPurse.Gold}g {p.CoinPurse.Silver}s {p.CoinPurse.Copper}c");
-            }
+            Console.WriteLine(" {0}", MoneyManager.PrettyMoney(p.CoinPurse));
         }
 
         public void ShowTotalVendoredAmount(ICharacter p)
@@ -95,11 +86,10 @@ namespace ADD2E_Core.Services
                 finalMoney.Silver += m.Price.Silver;
                 finalMoney.Copper += m.Price.Copper;
             }
-            MoneyManager mManager = new MoneyManager();
-            var switchedMoney = mManager.CalculateMoney(finalMoney);
+            var switchedMoney = MoneyManager.CalculateMoney(finalMoney);
 
             Console.WriteLine($"\r\n-- {p.Name}'s Equipment Vendor Value --");
-            Console.WriteLine($" {switchedMoney.Gold}s {switchedMoney.Silver}s {switchedMoney.Copper}c");
+            Console.WriteLine(" {0}", MoneyManager.PrettyMoney(switchedMoney));
         }
 
         public void ShowPrimaryWeapon(ICharacter p)
@@ -117,9 +107,25 @@ namespace ADD2E_Core.Services
         public void ShowEquippedGear(ICharacter p)
         {
             Console.WriteLine($"\r\n-- {p.Name}'s Equipped Gear --");
-            foreach (IGear gear in p.EquippedGear)
+            foreach (IEquipment item in p.EquippedGear)
             {
-                Console.WriteLine($" {gear.Name} ({gear.SlotType.ToString()})");
+                if (item is IWeapon w)
+                {
+                    Console.WriteLine($" -{w.Name} ({w.SlotType})");
+                    ShowGearBonus(item.WeaponMods);
+                }
+                else if (item is IGear g)
+                {
+                    Console.WriteLine($" -{g.Name} ({g.SlotType})");
+                    ShowGearBonus(item.WeaponMods);
+                }
+            }
+        }
+        private void ShowGearBonus(List<WeaponBonus> bonus)
+        {
+            foreach(WeaponBonus b in bonus)
+            {
+                Console.WriteLine("\t-{0} ({1})", b.Modifier, AbilityAdj(b.Value));
             }
         }
         

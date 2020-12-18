@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
+using ADD2E_Core.Services;
 namespace ADD2E_Core.Models
 {
     public class Gear : IGear
@@ -16,10 +17,13 @@ namespace ADD2E_Core.Models
         public bool Weareable { get; set; } = true;
         public bool Consumeable { get; set; } = false;
         public bool Equipped { get; set; } = false;
+        public int AC { get; set; } = 10;
+        public int? ACBonus { get; set; } = null;
+        public List<WeaponBonus> WeaponMods { get; set; } = new List<WeaponBonus>();
+
         public void CreateItem()
         {
-            Random r = new Random();
-            ItemID = EquipmentType.ToString() + "_" + r.Next(1, 99999);
+            ItemID = "item_" + IDGenerator.nextID();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ADD2E_Core.Interfaces
         bool Weareable { get; set; }
         bool Equipped { get; set; }
         bool Consumeable { get; set; }
+        List<WeaponBonus> WeaponMods { get; set; }
 
         void CreateItem();
     }

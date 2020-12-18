@@ -68,7 +68,6 @@ namespace ADD2E_Core.Services
             int returnHP = 0;
             if (CurrentHP == null)
             {
-                // Get the class Hit Die
                 if (Level == 1)
                 {
                     returnHP = Class.HitDie + AbilityScores.Constitution.HitPointAdjustment;
@@ -80,8 +79,7 @@ namespace ADD2E_Core.Services
                         int roll = 0;
                         if (i != 0)
                         {
-                            DiceManager diceManager = new DiceManager();
-                            roll = diceManager.Roll(1, Class.HitDie).Total + AbilityScores.Constitution.HitPointAdjustment;
+                            roll = DiceManager.Roll(1, Class.HitDie).Total + AbilityScores.Constitution.HitPointAdjustment;
                         }
                         else
                         {
@@ -103,15 +101,13 @@ namespace ADD2E_Core.Services
         
         public AbilityScores RandomizeAbilityScores(AbilityScores abilityScores)
         {
-            
-            DiceManager dr = new DiceManager();
             AbilityScoreManager abilityScoreRules = new AbilityScoreManager();
-            abilityScores.Strength = abilityScoreRules.SetStrength(dr.FourDSixDropTheLowest());
-            abilityScores.Dexterity = abilityScoreRules.SetDexterity(dr.FourDSixDropTheLowest());
-            abilityScores.Constitution = abilityScoreRules.SetConstitution(dr.FourDSixDropTheLowest());
-            abilityScores.Intelligence = abilityScoreRules.SetIntelligence(dr.FourDSixDropTheLowest());
-            abilityScores.Wisdom = abilityScoreRules.SetWisdom(dr.FourDSixDropTheLowest());
-            abilityScores.Charisma = abilityScoreRules.SetCharisma(dr.FourDSixDropTheLowest());
+            abilityScores.Strength = abilityScoreRules.SetStrength(DiceManager.FourDSixDropTheLowest());
+            abilityScores.Dexterity = abilityScoreRules.SetDexterity(DiceManager.FourDSixDropTheLowest());
+            abilityScores.Constitution = abilityScoreRules.SetConstitution(DiceManager.FourDSixDropTheLowest());
+            abilityScores.Intelligence = abilityScoreRules.SetIntelligence(DiceManager.FourDSixDropTheLowest());
+            abilityScores.Wisdom = abilityScoreRules.SetWisdom(DiceManager.FourDSixDropTheLowest());
+            abilityScores.Charisma = abilityScoreRules.SetCharisma(DiceManager.FourDSixDropTheLowest());
             return abilityScores;
         }
         public AbilityScores UpdateAbilityScores(AbilityScores abilityScores)
@@ -163,13 +159,11 @@ namespace ADD2E_Core.Services
 
         public Money AddMoney(Money coinpurse, Money newMoney)
         {
-            MoneyManager mManager = new MoneyManager();
-            return mManager.addMoney(coinpurse, newMoney);
+            return MoneyManager.addMoney(coinpurse, newMoney);
         }
         public Money RemoveMoney(Money coinpurse, Money newMoney)
         {
-            MoneyManager mManager = new MoneyManager();
-            return mManager.removeMoney(coinpurse, newMoney);
+            return MoneyManager.removeMoney(coinpurse, newMoney);
         }
 
         #endregion
@@ -177,11 +171,46 @@ namespace ADD2E_Core.Services
         #region Weapons
         public List<IEquipment> NoLongerEquipped(IEquipment item, List<IEquipment> allItems)
         {
-            if (item != null)
+            var searchItem = allItems.First(x => x == item);
+            if (searchItem != null)
             {
-                allItems.First(x => x == item).Equipped = false;
+                searchItem.Equipped = false;
             }
             return allItems;
+        }
+        
+        public List<IEquipment> NoLongerEquippedBySlotType(EquipmentSlot slot, List<IEquipment> allItems)
+        {
+            List<IEquipment> retItems = new List<IEquipment>();
+            foreach(IEquipment item in allItems)
+            {
+                
+                if(item is IWeapon weapon)
+                {
+                    if(weapon.SlotType == slot)
+                    {
+                    }
+                    else
+                    {
+                        retItems.Add(item);
+                    }
+                }
+                else if(item is IGear gear)
+                {
+                    if (gear.SlotType == slot)
+                    {
+                    }
+                    else
+                    {
+                        retItems.Add(item);
+                    }
+                }
+                else
+                {
+                   // retItems.Add(item);
+                }
+            }
+            return retItems;
         }
         #endregion
 

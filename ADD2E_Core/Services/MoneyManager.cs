@@ -4,15 +4,19 @@ using System.Text;
 using ADD2E_Core.Models;
 namespace ADD2E_Core.Services
 {
-    public class MoneyManager
+    public static class MoneyManager
     {
-        public Money CalculateMoney(Money m)
+        public static Money CalculateMoney(Money m)
         {
             int toCopper = convertMoneyToCopper(m);
             Money newMoney = convertMoneyFromCopper(toCopper);
             return newMoney;
         }
-        public Money convertMoneyFromCopper(int copper)
+        public static string PrettyMoney(Money m)
+        {
+            return string.Format("{0:N0}g {1:N0}s {2:N0}c", m.Gold, m.Silver, m.Copper);
+        }
+        public static Money convertMoneyFromCopper(int copper)
         {
             var remainder = copper;
 
@@ -33,19 +37,19 @@ namespace ADD2E_Core.Services
 
             return returnMoney;
         }
-        public int convertMoneyToCopper(Money m)
+        public static int convertMoneyToCopper(Money m)
         {
             int conversionMath = (m.Gold * 10000) + (m.Silver * 100) + m.Copper;
             return conversionMath;
         }
-        public Money addMoney(Money coinPurse, Money newMoney)
+        public static Money addMoney(Money coinPurse, Money newMoney)
         {
             coinPurse.Copper += newMoney.Copper;
             coinPurse.Silver += newMoney.Silver;
             coinPurse.Gold += newMoney.Gold;
             return coinPurse;
         }
-        public Money removeMoney(Money coinPurse, Money newMoney)
+        public static Money removeMoney(Money coinPurse, Money newMoney)
         {
             coinPurse.Copper -= newMoney.Copper;
                 if (coinPurse.Copper <= 0) { coinPurse.Copper = 0; }

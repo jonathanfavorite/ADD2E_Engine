@@ -5,9 +5,9 @@ using ADD2E_Core.Models;
 using System.Linq;
 namespace ADD2E_Core.Services
 {
-    public class DiceManager
+    public static class DiceManager
     {
-        public DiceRollResponse Roll(int amount, int sides)
+        public static DiceRollResponse Roll(int amount, int sides)
         {
             List<DiceRoll> rollList = new List<DiceRoll>();
             int Total = 0;
@@ -25,12 +25,12 @@ namespace ADD2E_Core.Services
             }
             return new DiceRollResponse { Rolls = rollList, Total = Total };
         }
-        public int RollOnce(int sidedDie)
+        public static int RollOnce(int sidedDie)
         {
             Random r = new Random();
             return r.Next(1, sidedDie);
         }
-        public int FourDSixDropTheLowest()
+        public static int FourDSixDropTheLowest()
         {
             List<int> rolls = new List<int>();
             Random r = new Random();

@@ -10,89 +10,200 @@ namespace ADD2E_Core
     public class Program
     {
         private static UITestingManager UIManager;
-        static async Task Main(string[] args)
+        static void AppStart()
         {
             UIManager = new UITestingManager();
+            // IOC Container register here
+        }
+        static async Task Main(string[] args)
+        {
 
+            AppStart();
+
+            #region Testing Player Zone
+            /*
             PlayerCharacter Felix = new PlayerCharacter
             {
                 Name = "Anduin",
                 Level = 10,
                 RaceType = RaceType.Human,
                 ClassType = ClassType.Fighter,
-                CoinPurse = { Gold = 100, Silver = 200, Copper = 410 },
-                AbilityScores =
-                {
-                    Strength = { Value = 18 },
-                    Intelligence = { Value = 10 },
-                    Constitution = { Value = 18 },
-                    Charisma = { Value = 11 },
-                    Dexterity = { Value = 16 },
-                    Wisdom = { Value = 10 }
-                },
+                CoinPurse = { Gold = 3, Silver = 15, Copper = 55 },
+                RandomizeStats = true,
                 HitPoints = 100
             };
 
-            Felix.CreateCharacter();
-
-            Equipment Cheese = new Equipment
+            IEquipment Cheese = EquipmentFactory.CreateItem(new Equipment
             {
                 Name = "Cheese",
                 Description = "Some slightly moldy cheese.",
                 Price = { Copper = 5 },
                 Consumeable = true,
                 EquipmentType = EquipmentType.Food
-            };
-
-            Felix.AddItem(Cheese, 15);
-
-            Weapon bastardSword = new Weapon
+            });
+            IWeapon Thunderfury = EquipmentFactory.CreateWeapon(new Weapon
             {
-                 Name = "Bastard Sword (One hand)",
-                 AttackType = WeaponAttackType.S,
-                 Category = WeaponCategory.BastardSwordOneHanded,
-                 TwoHanded = false,
-                 Price = { Gold = 1, Silver = 50 },
-                 Weareable = true,
-                 SlotType = EquipmentSlot.PRIMARY
-            };
-
-            Gear LongsleeveShirt = new Gear
+                Name = "Thunderfury, Blessed Blade of the Windseeker",
+                AttackType = WeaponAttackType.S,
+                Category = WeaponCategory.TwoHandedSword,
+                TwoHanded = true,
+                Price = { Gold = 500 },
+                SlotType = EquipmentSlot.PRIMARY,
+                WeaponMods =
+                {
+                    new WeaponBonus { Modifier = ItemBonusList.DAMAGE, Value = 5}
+                }
+            });
+            IGear LongsleeveShirt = EquipmentFactory.CreateGear(new Gear
             {
-                Name = "Long Sleeve Shirt (Red)",
+                Name = "Long Sleeve Shirt Red",
                 SlotType = EquipmentSlot.CHEST,
                 Price = {Copper = 50 }
-            };
-            Gear MagicalRing = new Gear
+            });
+            IGear MagicalRing = EquipmentFactory.CreateGear(new Gear
             {
                 Name = "Iridescent Gold Banded Ring",
                 SlotType = EquipmentSlot.RING,
-                Price = { Gold = 15000 }
+                Price = { Gold = 15000 },
+                WeaponMods =
+                {
+                    new WeaponBonus { Modifier = ItemBonusList.INTELLIGENCE, Value = 1}
+                }
+            });
+            IWeapon Shield = EquipmentFactory.CreateWeapon(new Weapon
+            {
+                Name = "Wooden Shield",
+                SlotType = EquipmentSlot.SECONDARY,
+                Price = {Gold = 1},
+                WeaponMods = {
+                    new WeaponBonus { Modifier = ItemBonusList.AC, Value = 2}
+                }
+            });
+            IGear OtherRing = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Soulstained Ring of Empowerment",
+                SlotType = EquipmentSlot.RING,
+                Price = {Gold = 500},
+                WeaponMods =
+                {
+                    new WeaponBonus { Modifier = ItemBonusList.STRENGTH, Value = 1},
+                    new WeaponBonus { Modifier = ItemBonusList.HP, Value = 10}
+                }
+            });
 
-            };
-
-            Felix.AddItem(bastardSword);
+            Felix.AddItem(Shield);
+            Felix.AddItem(Cheese, 25); // 25 pieces of cheese? why not.
+            Felix.AddItem(Thunderfury);
             Felix.AddItem(LongsleeveShirt);
             Felix.AddItem(MagicalRing);
+            Felix.AddItem(OtherRing);
 
+            //Felix.EquipItem(Shield);
             Felix.EquipItem(LongsleeveShirt);
-            Felix.EquipItem(bastardSword);
+            Felix.EquipItem(Thunderfury);
             Felix.EquipItem(MagicalRing);
+            Felix.EquipItem(OtherRing);
+            */
+            #endregion
+            //UIManager.ShowCharacterInfo(Felix, true);
+
+            var Felix = CreateMainCharacter("Felix");
+            var GoblinGroup = CreateGoblins(3);
 
             UIManager.ShowCharacterInfo(Felix, true);
 
-            /*
-            UIManager.ShowAbilityScores(Felix);
-            UIManager.ShowEquipmentForCharacter(Felix);
-            UIManager.ShowCoinPurse(Felix);
-            UIManager.ShowPrimaryWeapon(Felix);
-            UIManager.ShowEquippedGear(Felix);
-            */
+            List<ICharacter> allChars = new List<ICharacter>
+            {
+                Felix,
+                GoblinGroup[0],
+                GoblinGroup[1],
+                GoblinGroup[2]
+
+            };
+            CombatManager combat = new CombatManager(allChars);
+           // combat.StartCombat();
+
 
             Console.ReadLine();
         }
 
-       
+        static ICharacter CreateMainCharacter(string characterName)
+        {
+            ICharacter Character = CharacterFactory.CreateCharacter(new PlayerCharacter
+            {
+                Name = characterName,
+                Level = 10,
+                RaceType = RaceType.Human,
+                ClassType = ClassType.Fighter,
+                CoinPurse = { Gold = 3, Silver = 15, Copper = 55 },
+                RandomizeStats = true,
+                MainCharacter = true
+            });
+            Character.CreateCharacter();
+
+
+            IEquipment Cheese = EquipmentFactory.CreateItem(new Equipment
+            {
+                Name = "Cheese",
+                Price = { Copper = 5 },
+                Consumeable = true,
+                Description = "Some moldy cheese.",
+                EquipmentType = EquipmentType.Food
+            });
+
+            IWeapon bastardSword = EquipmentFactory.CreateWeapon(new Weapon
+            {
+                Name = "Bastard Sword (One hand)",
+                AttackType = WeaponAttackType.S,
+                Category = WeaponCategory.BastardSwordOneHanded,
+                TwoHanded = false,
+                Price = { Gold = 1, Silver = 50 },
+                Damage = { Amount = 1, SidedDie = 8, Bonus = 1 },
+                Weareable = true,
+                SlotType = EquipmentSlot.PRIMARY
+            });
+
+            Character.AddItem(bastardSword, 1);
+            Character.EquipItem(bastardSword);
+            Character.AddItem(Cheese, 20);
+
+            return Character;
+        }
+
+        static List<ICharacter> CreateGoblins(int Amount = 1)
+        {
+            List<ICharacter> returnChars = new List<ICharacter>();
+            Random rMoney = new Random();
+            for(int i = 0; i < Amount; i++)
+            {
+                ICharacter goblin = CharacterFactory.CreateCharacter(new PlayerCharacter
+                {
+                    Name = "Goblin" + i,
+                    Level = 1,
+                    ClassType = ClassType.Fighter,
+                    RaceType = RaceType.Human,
+                    RandomizeStats = true,
+                    CoinPurse = { Gold = rMoney.Next(0,2), Copper = rMoney.Next(0, 100), Silver = rMoney.Next(0, 100), }
+                });
+                //goblin.CreateCharacter();
+
+                IWeapon sword = EquipmentFactory.CreateWeapon(new Weapon
+                {
+                    Name = "Rusty Sword",
+                    AttackType = WeaponAttackType.S,
+                    Category = WeaponCategory.ShortSword,
+                    Price = { Silver = 12 },
+                    Damage = { SidedDie = 6},
+                    SlotType = EquipmentSlot.PRIMARY,
+                    Size = WeaponSize.S
+                });
+
+                goblin.AddItem(sword, 1);
+                goblin.EquipItem(sword);
+                returnChars.Add(goblin);
+            }
+            return returnChars;
+        }
       
     }
 }

@@ -7,5 +7,7 @@ namespace ADD2E_Core.Interfaces
     public interface IGear : IEquipment
     {
         EquipmentSlot SlotType { get; set; }
+        int AC { get; set; }
+        int? ACBonus { get; set; }
     }
 }

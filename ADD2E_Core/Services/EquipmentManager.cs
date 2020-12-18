@@ -4,12 +4,13 @@ using System.Text;
 using System.Linq;
 using ADD2E_Core.Interfaces;
 using ADD2E_Core.Models;
+using ADD2E_Core.Enums;
+
 namespace ADD2E_Core.Services
 {
     public class EquipmentManager
     {
         private List<IEquipment> equipment;
-        private MoneyManager moneyManager = new MoneyManager();
         public EquipmentManager() { }
         public EquipmentManager(List<IEquipment> e)
         {
@@ -24,8 +25,8 @@ namespace ADD2E_Core.Services
             {
                 int quantity = CountEquipmentQuantity(item);
                 Money addQuantityAmount = FormatMoney(item.Price, quantity);
-                Money formattedQuanaityPrice = moneyManager.CalculateMoney(addQuantityAmount);
-                string formattedPrice = string.Format("{0}g {1}s {2}c", formattedQuanaityPrice.Gold, formattedQuanaityPrice.Silver, formattedQuanaityPrice.Copper);
+                Money formattedQuanaityPrice = MoneyManager.CalculateMoney(addQuantityAmount);
+                string formattedPrice = MoneyManager.PrettyMoney(formattedQuanaityPrice);
                 string formattedItem = string.Format("({0}) {1} ({2})", quantity, item.Name, formattedPrice);
                 returnString.Add(formattedItem);
             }
@@ -50,5 +51,28 @@ namespace ADD2E_Core.Services
             };
             return newMoney;
         }
+        public int CountHowManyEquippedBySlotType(EquipmentSlot slot, List<IEquipment> allItems)
+        {
+            int count = 0;
+            foreach (IEquipment item in allItems)
+            {
+                if (item is IWeapon w)
+                {
+                    if (w.SlotType == slot)
+                    {
+                        ++count;
+                    }
+                }
+                if (item is IGear g)
+                {
+                    if (g.SlotType == slot)
+                    {
+                        ++count;
+                    }
+                }
+            }
+            return count;
+        }
+
     }
 }

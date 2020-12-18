@@ -7,10 +7,12 @@ namespace ADD2E_Core.Interfaces
 {
     public interface ICharacter
     {
-        int? PlayerID { get; set; }
+        int PlayerID { get; set; }
         string Name { get; set; }
         int Level { get; set; }
+        bool MainCharacter { get; set; }
         int? HitPoints { get; set; }
+        int TmpHitPoints { get; set; }
         int ArmorClass { get; set; }
         bool RandomizeStats { get; set; }
         IRace Race { get; set; }
@@ -30,5 +32,8 @@ namespace ADD2E_Core.Interfaces
         void CreateCharacter();
         void AddItem(IEquipment item, int quantity);
         void RemoveItem(IEquipment item, int quantity);
+        void AddMoney(Money m);
+        void RemoveMoney(Money m);
+        void EquipItem(IEquipment item);
     }
 }
