@@ -4,6 +4,7 @@ using System.Text;
 using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
 using ADD2E_Core.Models;
+using ADD2E_Core.Extensions;
 using System.Linq;
 
 namespace ADD2E_Core.Services
@@ -129,6 +130,10 @@ namespace ADD2E_Core.Services
         {
             ThacoManager thacoManager = new ThacoManager();
             return thacoManager.getThaco(CG, Level);
+        }
+        public int SetupAC(List<IEquipment> equipment)
+        {
+            return CharacterCombatMaths.CalculateArmorClass(equipment);
         }
         #endregion
 

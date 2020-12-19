@@ -105,21 +105,25 @@ namespace ADD2E_Core
             Felix.EquipItem(OtherRing);
             */
             #endregion
-            //UIManager.ShowCharacterInfo(Felix, true);
+          
 
             var Felix = CreateMainCharacter("Felix");
-            var GoblinGroup = CreateGoblins(3);
+            var GoblinGroup = CreateGoblins(20);
 
             UIManager.ShowCharacterInfo(Felix, true);
 
             List<ICharacter> allChars = new List<ICharacter>
             {
-                Felix,
-                GoblinGroup[0],
-                GoblinGroup[1],
-                GoblinGroup[2]
-
+                Felix
             };
+
+            UIManager.ShowCharacterInfo(Felix, true);
+
+            for (int i = 0; i <= GoblinGroup.Count - 1; i++)
+            {
+                allChars.Add(GoblinGroup[i]);
+            }
+
             CombatManager combat = new CombatManager(allChars);
            // combat.StartCombat();
 
@@ -132,24 +136,13 @@ namespace ADD2E_Core
             ICharacter Character = CharacterFactory.CreateCharacter(new PlayerCharacter
             {
                 Name = characterName,
-                Level = 10,
+                Level = 1,
                 RaceType = RaceType.Human,
                 ClassType = ClassType.Fighter,
-                CoinPurse = { Gold = 3, Silver = 15, Copper = 55 },
                 RandomizeStats = true,
                 MainCharacter = true
             });
             Character.CreateCharacter();
-
-
-            IEquipment Cheese = EquipmentFactory.CreateItem(new Equipment
-            {
-                Name = "Cheese",
-                Price = { Copper = 5 },
-                Consumeable = true,
-                Description = "Some moldy cheese.",
-                EquipmentType = EquipmentType.Food
-            });
 
             IWeapon bastardSword = EquipmentFactory.CreateWeapon(new Weapon
             {
@@ -163,9 +156,31 @@ namespace ADD2E_Core
                 SlotType = EquipmentSlot.PRIMARY
             });
 
+            IGear chainMailChest = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "ChainMail Chest Piece",
+                AC = 7,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Silver = 50 },
+                SlotType = EquipmentSlot.CHEST,
+                ArmorType = ArmorTypeList.ChainMail
+            });
+
+            IGear WoodenShield = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Wooden Shield",
+                ArmorType = ArmorTypeList.Shield,
+                SlotType = EquipmentSlot.SECONDARY,
+                StatMods = { new StatModifier { Modifier = ItemBonusList.AC, Value = 1} },
+                Price = { Silver = 23 }
+            });
+
             Character.AddItem(bastardSword, 1);
+            Character.AddItem(chainMailChest, 1);
+            Character.AddItem(WoodenShield, 1);
             Character.EquipItem(bastardSword);
-            Character.AddItem(Cheese, 20);
+            Character.EquipItem(chainMailChest);
+            Character.EquipItem(WoodenShield);
 
             return Character;
         }
@@ -198,8 +213,19 @@ namespace ADD2E_Core
                     Size = WeaponSize.S
                 });
 
+                IGear LeatherChest = EquipmentFactory.CreateGear(new Gear
+                {
+                    Name = "Leather Chest Piece",
+                     AC = 9,
+                     EquipmentType = EquipmentType.Clothing,
+                     Price = { Silver = 50 },
+                     SlotType = EquipmentSlot.CHEST
+                });
+
+                goblin.AddItem(LeatherChest, 1);
                 goblin.AddItem(sword, 1);
                 goblin.EquipItem(sword);
+                goblin.EquipItem(LeatherChest);
                 returnChars.Add(goblin);
             }
             return returnChars;

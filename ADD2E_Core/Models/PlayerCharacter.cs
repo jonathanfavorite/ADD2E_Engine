@@ -47,7 +47,7 @@ namespace ADD2E_Core.Models
                 HitPoints = characterManager.SetHitPoints(Level, Class, AbilityScores, HitPoints);
                 TmpHitPoints = Convert.ToInt32(HitPoints);
                 Thaco = characterManager.SetupThaco(Class.ClassGroup, Level);
-                if(RandomizeStats)
+                if (RandomizeStats)
                 {
                     AbilityScores = characterManager.RandomizeAbilityScores(AbilityScores);
                 }
@@ -101,6 +101,7 @@ namespace ADD2E_Core.Models
                 {
                     EquipGear(gear);
                 }
+                ArmorClass = characterManager.SetupAC(EquippedGear);
             }
             else
             {
@@ -143,6 +144,7 @@ namespace ADD2E_Core.Models
             item.Equipped = true;
             EquippedGear.Add(item);
         }
+
 
     }
 }

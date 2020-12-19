@@ -26,6 +26,8 @@ namespace ADD2E_Core.Services
             Console.WriteLine($" Level: {p.Level}");
             Console.WriteLine($" Experience: {p.LevelInfo.Experience} / {p.NextLevelInfo.Experience}");
             Console.WriteLine($" HP: {p.HitPoints} / {p.TmpHitPoints}");
+            Console.WriteLine($" Thaco: {p.Thaco.Value}");
+            Console.WriteLine($" AC: {p.ArmorClass}");
 
             if (detailed)
             {
@@ -59,7 +61,6 @@ namespace ADD2E_Core.Services
             }
             return returnVal;
         }
-
         public void ShowEquipmentForCharacter(ICharacter p)
         {
             Console.WriteLine($"\r\n-- {p.Name}'s Equipment --");
@@ -76,7 +77,6 @@ namespace ADD2E_Core.Services
             Console.WriteLine($"\r\n-- {p.Name}'s Coin Purse --");
             Console.WriteLine(" {0}", MoneyManager.PrettyMoney(p.CoinPurse));
         }
-
         public void ShowTotalVendoredAmount(ICharacter p)
         {
             Money finalMoney = new Money();
@@ -112,18 +112,18 @@ namespace ADD2E_Core.Services
                 if (item is IWeapon w)
                 {
                     Console.WriteLine($" -{w.Name} ({w.SlotType})");
-                    ShowGearBonus(item.WeaponMods);
+                    ShowGearBonus(item.StatMods);
                 }
                 else if (item is IGear g)
                 {
                     Console.WriteLine($" -{g.Name} ({g.SlotType})");
-                    ShowGearBonus(item.WeaponMods);
+                    ShowGearBonus(item.StatMods);
                 }
             }
         }
-        private void ShowGearBonus(List<WeaponBonus> bonus)
+        private void ShowGearBonus(List<StatModifier> bonus)
         {
-            foreach(WeaponBonus b in bonus)
+            foreach(StatModifier b in bonus)
             {
                 Console.WriteLine("\t-{0} ({1})", b.Modifier, AbilityAdj(b.Value));
             }

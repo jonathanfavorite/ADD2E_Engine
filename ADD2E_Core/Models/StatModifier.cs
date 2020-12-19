@@ -4,7 +4,7 @@ using System.Text;
 using ADD2E_Core.Enums;
 namespace ADD2E_Core.Models
 {
-    public class WeaponBonus
+    public class StatModifier
     {
         public ItemBonusList Modifier { get; set; }
         public bool Add { get; set; } = true;

@@ -22,7 +22,7 @@ namespace ADD2E_Core.Extensions
             int totalBonus = 0;
             foreach(IEquipment item in p.EquippedGear)
             {
-                foreach(WeaponBonus bonus in item.WeaponMods)
+                foreach(StatModifier bonus in item.StatMods)
                 {
                     if(bonus.Modifier == ItemBonusList.HIT)
                     {
@@ -32,5 +32,49 @@ namespace ADD2E_Core.Extensions
             }
             return totalBonus;
         }
+        public static int CalculateArmorClass(List<IEquipment> equipment)
+        {
+            var ACList = new List<int>();
+            var ACBonusFromGear = ArmorClassBonus(equipment);
+            foreach(IEquipment item in equipment)
+            {
+                if(item is IGear g)
+                {
+                    ACList.Add(g.AC);
+                }
+            }
+            if (ACList.Count > 0)
+            {
+                var ordered = ACList.OrderBy(x => x).ToList();
+                if (ordered.Count() > 0)
+                {
+                    return ordered.First() - ACBonusFromGear;
+                }
+                else
+                {
+                    return 10;
+                }
+            }
+            else
+            {
+                return 10;
+            }
+        }
+        private static int ArmorClassBonus(List<IEquipment> equipment)
+        {
+            int totalBonus = 0;
+            foreach(IEquipment item in equipment)
+            {
+                foreach (StatModifier bonus in item.StatMods)
+                {
+                    if (bonus.Modifier == ItemBonusList.AC)
+                    {
+                        totalBonus += bonus.Value;
+                    }
+                }
+            }
+            return totalBonus;
+        }
+
     }
 }

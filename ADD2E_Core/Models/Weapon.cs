@@ -23,7 +23,7 @@ namespace ADD2E_Core.Models
         public bool Consumeable { get; set; } = false;
         public bool Equipped { get; set; } = false;
         public bool TwoHanded { get; set; } = false;
-        public List<WeaponBonus> WeaponMods { get; set; } = new List<WeaponBonus>();
+        public List<StatModifier> StatMods { get; set; } = new List<StatModifier>();
         public WeaponDamage Damage { get; set; } = new WeaponDamage();
 
         public void CreateItem()

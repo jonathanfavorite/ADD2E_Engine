@@ -9,5 +9,6 @@ namespace ADD2E_Core.Interfaces
         EquipmentSlot SlotType { get; set; }
         int AC { get; set; }
         int? ACBonus { get; set; }
+        ArmorTypeList ArmorType { get; set; }
     }
 }
