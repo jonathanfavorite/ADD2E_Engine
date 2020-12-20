@@ -19,7 +19,15 @@ namespace ADD2E_Core.Services
         public static ClassExperienceLevel getExperienceLevels(ClassType t, int Level = 1)
         {
             AddExperienceLevels();
-            return experienceLevels[t].First(l => l.Level == Level);
+            if(Level >= 20)
+            {
+                return experienceLevels[t].First(l => l.Level == 20);
+            }
+            else
+            {
+                return experienceLevels[t].First(l => l.Level == Level);
+            }
+            
         }
         public static ClassExperienceLevel GetLevelByExperience(ClassType t, int experience)
         {

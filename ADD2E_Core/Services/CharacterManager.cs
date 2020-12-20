@@ -5,6 +5,7 @@ using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
 using ADD2E_Core.Models;
 using ADD2E_Core.Extensions;
+using ADD2E_Core.Exceptions;
 using System.Linq;
 
 namespace ADD2E_Core.Services
@@ -135,6 +136,57 @@ namespace ADD2E_Core.Services
 
         #endregion
 
+        #region Character Requirements
+
+        public static bool DoesCharacterMeetRequirements(AbilityScores _abilityScores, IClass _class, IRace _race)
+        {
+            bool doesMeetRequirements = true;
+            string problemAbilityScore = "";
+            foreach(var _req in _class.MinimumAbilityScoreRequirements)
+            {
+                if(_req.Key == AbilityScoreType.Strength)
+                {
+                    problemAbilityScore = _req.Key.ToString();
+                    if (_abilityScores.Strength.Value < _req.Value) { doesMeetRequirements = false; break; }
+                }
+                if (_req.Key == AbilityScoreType.Constitution)
+                {
+                    problemAbilityScore = _req.Key.ToString();
+                    if (_abilityScores.Constitution.Value < _req.Value) { doesMeetRequirements = false; break; }
+                }
+                if (_req.Key == AbilityScoreType.Charisma)
+                {
+                    problemAbilityScore = _req.Key.ToString();
+                    if (_abilityScores.Charisma.Value < _req.Value) { doesMeetRequirements = false; break; }
+                }
+                if (_req.Key == AbilityScoreType.Dextarity)
+                {
+                    problemAbilityScore = _req.Key.ToString();
+                    if (_abilityScores.Dexterity.Value < _req.Value) { doesMeetRequirements = false; break; } 
+                }
+                if (_req.Key == AbilityScoreType.Wisdom)
+                {
+                    problemAbilityScore = _req.Key.ToString();
+                    if (_abilityScores.Wisdom.Value < _req.Value) { doesMeetRequirements = false; break; } 
+                }
+                if (_req.Key == AbilityScoreType.Intelligence)
+                {
+                    problemAbilityScore = _req.Key.ToString();
+                    if (_abilityScores.Intelligence.Value < _req.Value) { doesMeetRequirements = false; break; }
+                    
+                }
+
+            }
+            if(doesMeetRequirements == false)
+            {
+                string errorMessage = string.Format($"Ability Score Requirement Error: {problemAbilityScore} is too low.");
+                throw new InvalidCharacterCreationException(errorMessage);
+            }
+            return doesMeetRequirements;
+        }
+
+        #endregion
+
         #region Thaco, AC & Saving Throws
         public static ThacoScore SetupThaco(ClassGroup CG, int Level)
         {
@@ -164,9 +216,12 @@ namespace ADD2E_Core.Services
             r.ExperienceTotal = addedExp;
             return r;
         }
-        public static double CurrentLevelCompletedPercentage(int currentExp, int nextLevelExp)
+        public static double CurrentLevelCompletedPercentage(int currentExp, int thisLevelExpBase, int nextLevelExp)
         {
-            return Convert.ToDouble(Math.Round(((decimal)currentExp / (decimal)nextLevelExp) * 100, 2));
+            int first = currentExp - thisLevelExpBase;
+            int next = nextLevelExp - thisLevelExpBase;
+            return Convert.ToDouble(Math.Round(((decimal)first / (decimal)next) * 100, 2));
+           // return Convert.ToDouble(Math.Round(((((decimal)currentExp) - thisLevelExpBase) / (decimal)nextLevelExp) * 100, 2));
         }
         #endregion
 

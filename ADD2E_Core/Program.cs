@@ -128,12 +128,10 @@ namespace ADD2E_Core
             }
 
           // UIManager.ShowCharacterInfo(Felix, true);
-            Console.WriteLine("");
-            Console.WriteLine("");
 
             if (Felix is IPlayerCharacter c)
             {
-                c.AddExperience(16000);
+               // c.AddExperience(51234235);
             }
           
             UIManager.ShowCharacterInfo(Felix, true);
@@ -154,15 +152,17 @@ namespace ADD2E_Core
                 RaceType = RaceType.Human,
                 ClassType = ClassType.Fighter,
                 MainCharacter = true,
+                RandomizeStats = true,
                 OwnerName = "Jonathan Favorite",
                 AbilityScores =
                 {
-                    Constitution = { Value = 18 },
-                    Strength = { Value = 18 },
-                    Dexterity = { Value = 18 },
-                    Charisma = { Value = 18 },
-                    Intelligence = { Value = 18 },
-                    Wisdom = { Value = 18 }
+                    
+                    Constitution = { Value = 8 },
+                    Strength = { Value = 8 },
+                    Dexterity = { Value = 8 },
+                    Charisma = { Value = 8 },
+                    Intelligence = { Value = 8 },
+                    Wisdom = { Value = 8 }
                 }
             });
 

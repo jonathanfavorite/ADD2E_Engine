@@ -15,7 +15,14 @@ namespace ADD2E_Core.Services
         {
             List = new Dictionary<ClassGroup, List<SavingThrow>>();
             List.Add(ClassGroup.Warrior, WarriorSaves());
-            return List[_ClassGroup].First(l => l.Level == Level);
+            if(Level >= 17)
+            {
+                return List[_ClassGroup].First(l => l.Level == 17);
+            }
+            else
+            {
+                return List[_ClassGroup].First(l => l.Level == Level);
+            }
         }
         private static List<SavingThrow> WarriorSaves()
         {

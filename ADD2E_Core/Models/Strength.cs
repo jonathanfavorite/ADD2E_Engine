@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using ADD2E_Core.Enums;
+using ADD2E_Core.Interfaces;
 namespace ADD2E_Core.Models
 {
-    public class Strength
+    public class Strength : IAbilityScore
     {
-        public AbilityScoreType Name { get; private set; } = AbilityScoreType.Strength;
+        public AbilityScoreType Name { get; set; } = AbilityScoreType.Strength;
         public int Value { get; set; } = 10;
         public int HitProb { get; set; } = 0;
         public int MaxPress { get; set; } = 0;
