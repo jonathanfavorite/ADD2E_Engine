@@ -17,12 +17,14 @@ namespace ADD2E_Core.Models
         public int? HitPoints { get; set; } = null;
         public int TmpHitPoints { get; set; }
         public int ArmorClass { get; set; } = 10;
+        public AlignmentList Alignment { get; set; } = AlignmentList.TRUENEUTRAL;
         public bool RandomizeStats { get; set; } = false;
         public IRace Race { get; set; }
         public Money CoinPurse { get; set; } = new Money();
         public IClass Class { get; set; }
         public ThacoScore Thaco { get; set; }
         public AbilityScores AbilityScores { get; set; } = new AbilityScores();
+        public SavingThrow SavingThrows { get; set; }
         public List<IEquipment> Equipment { get; set; } = new List<IEquipment>();
         public IWeapon PrimaryWeapon { get; set; } = null;
         public IWeapon SecondaryWeapon { get; set; } = null;
@@ -30,31 +32,28 @@ namespace ADD2E_Core.Models
         public ClassExperienceLevel LevelInfo { get; set; }
         public ClassExperienceLevel NextLevelInfo { get; set; }
         public int Experience { get; set; } = 0;
-        private CharacterManager characterManager = new CharacterManager();
+        public double CurrentLevelProgressExp { get; set; } = 0.00;
         public RaceType RaceType { get; set; }
         public ClassType ClassType { get; set; }
 
         public void CreateCharacter()
         {
-            ClassManager classManager = new ClassManager();
+            Console.WriteLine("Created Char");
             PlayerID = IDGenerator.nextID();
-            Race = characterManager.SetPlayerRace(RaceType);
-            if(characterManager.CanRacePlayClass(Race, ClassType))
+            Race = CharacterManager.SetPlayerRace(RaceType);
+            if(CharacterManager.CanRacePlayClass(Race, ClassType))
             {
-                Class = characterManager.setCharacterClass(ClassType);
-                LevelInfo = classManager.getExperienceLevels(ClassType, Level);
-                NextLevelInfo = classManager.getExperienceLevels(ClassType, Level + 1);
-                HitPoints = characterManager.SetHitPoints(Level, Class, AbilityScores, HitPoints);
-                TmpHitPoints = Convert.ToInt32(HitPoints);
-                Thaco = characterManager.SetupThaco(Class.ClassGroup, Level);
+                Class = CharacterManager.setCharacterClass(ClassType);
                 if (RandomizeStats)
                 {
-                    AbilityScores = characterManager.RandomizeAbilityScores(AbilityScores);
+                    AbilityScores = CharacterManager.RandomizeAbilityScores(AbilityScores);
                 }
                 else
                 {
-                    AbilityScores = characterManager.UpdateAbilityScores(AbilityScores);
+                    AbilityScores = CharacterManager.UpdateAbilityScores(AbilityScores);
                 }
+                HitPoints = CharacterManager.SetInitialHitPoints(Level, Class, AbilityScores, HitPoints);
+                RefreshCharacter();
             }
             else
             {
@@ -62,9 +61,22 @@ namespace ADD2E_Core.Models
                 throw new InvalidCharacterCreationException(expMessage);
             }
         }
+        private void RefreshCharacter()
+        {
+            LevelInfo = ClassManager.getExperienceLevels(ClassType, Level);
+            if (Level > 1)
+            {
+                Experience = LevelInfo.Experience;
+            }
+            NextLevelInfo = ClassManager.getExperienceLevels(ClassType, Level + 1);
+            TmpHitPoints = Convert.ToInt32(HitPoints);
+            Thaco = CharacterManager.SetupThaco(Class.ClassGroup, Level);
+            SavingThrows = ClassManager.SetupSavingThrows(Class.ClassGroup, Level);
+            CurrentLevelProgressExp = CharacterManager.CurrentLevelCompletedPercentage(Experience, NextLevelInfo.Experience);
+        }
         public void AddItem(IEquipment Item, int Quantity = 1)
         {
-            var addedItems = characterManager.AddItem(Item, Quantity);
+            var addedItems = CharacterManager.AddItem(Item, Quantity);
             foreach(IEquipment item in addedItems)
             {
                 Equipment.Add(item);
@@ -72,15 +84,41 @@ namespace ADD2E_Core.Models
         }
         public void RemoveItem(IEquipment Item, int Quantity = 1)
         {
-            Equipment = characterManager.RemoveItem(Item, Quantity, Equipment);
+            Equipment = CharacterManager.RemoveItem(Item, Quantity, Equipment);
         }
         public void AddMoney(Money m)
         {
-            CoinPurse = characterManager.AddMoney(CoinPurse, m);
+            CoinPurse = CharacterManager.AddMoney(CoinPurse, m);
         }
         public void RemoveMoney(Money m)
         {
-            CoinPurse = characterManager.RemoveMoney(CoinPurse, m);
+            CoinPurse = CharacterManager.RemoveMoney(CoinPurse, m);
+        }
+        public void AddExperience(int exp)
+        {
+            Console.WriteLine($"Adding {exp} to {Name}");
+            Console.WriteLine($"Current Level: {Level}");
+            ExperienceResponse addExp = CharacterManager.AddEXP(Experience, NextLevelInfo.Experience, ClassType, exp);
+            Experience = addExp.ExperienceTotal;
+            if(addExp.ResponseType == CharacterResponseTypes.LEVELEDUP)
+            {
+                
+                LevelInfo = addExp.NewExperienceLevel;
+                int levelDifference = addExp.NewExperienceLevel.Level - Level;
+                NextLevelInfo = addExp.NextExperienceLevel;
+                Level = LevelInfo.Level;
+
+                var currentHitPointMax = HitPoints;
+                HitPoints = CharacterManager.UpdateHitPoints(Class, AbilityScores, Convert.ToInt32(currentHitPointMax), levelDifference);
+                RefreshCharacter();
+                Console.WriteLine($"{Name} leveled up from {Level} to {addExp.NewExperienceLevel.Level}");
+                Console.WriteLine($"New Level: {addExp.NewExperienceLevel.Level}");
+            }
+            else
+            {
+                CurrentLevelProgressExp = CharacterManager.CurrentLevelCompletedPercentage(Experience, NextLevelInfo.Experience);
+            }
+            Console.WriteLine($"Added {exp} experience. ({Experience} / {NextLevelInfo.Experience})\r\n");
         }
         public void EquipItem(IEquipment item)
         {
@@ -101,7 +139,7 @@ namespace ADD2E_Core.Models
                 {
                     EquipGear(gear);
                 }
-                ArmorClass = characterManager.SetupAC(EquippedGear);
+                ArmorClass = CharacterManager.SetupAC(EquippedGear);
             }
             else
             {
@@ -113,7 +151,7 @@ namespace ADD2E_Core.Models
         {
             if (item.SlotType == EquipmentSlot.PRIMARY)
             { 
-                EquippedGear = characterManager.NoLongerEquippedBySlotType(EquipmentSlot.PRIMARY, EquippedGear);
+                EquippedGear = CharacterManager.NoLongerEquippedBySlotType(EquipmentSlot.PRIMARY, EquippedGear);
                 PrimaryWeapon = item;
                 EquippedGear.Add(item);
                 PrimaryWeapon.Equipped = true;
@@ -128,7 +166,7 @@ namespace ADD2E_Core.Models
         {
             if (item.SlotType == EquipmentSlot.SECONDARY)
             {
-                EquippedGear = characterManager.NoLongerEquippedBySlotType(EquipmentSlot.PRIMARY, EquippedGear);
+                EquippedGear = CharacterManager.NoLongerEquippedBySlotType(EquipmentSlot.PRIMARY, EquippedGear);
                 SecondaryWeapon = item;
                 EquippedGear.Add(item);
                 SecondaryWeapon.Equipped = true;

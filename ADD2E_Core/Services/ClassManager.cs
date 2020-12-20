@@ -6,20 +6,32 @@ using ADD2E_Core.Models;
 using System.Linq;
 namespace ADD2E_Core.Services
 {
-    public class ClassManager
+    public static class ClassManager
     {
-       private Dictionary<ClassType, List<ClassExperienceLevel>> experienceLevels;
-       public ClassManager()
+       private static Dictionary<ClassType, List<ClassExperienceLevel>> experienceLevels;
+
+        private static void AddExperienceLevels()
         {
             experienceLevels = new Dictionary<ClassType, List<ClassExperienceLevel>>();
             experienceLevels.Add(ClassType.Fighter, FighterExperienceLevels());
             experienceLevels.Add(ClassType.Wizard, WizardExperienceLevels());
         }
-        public ClassExperienceLevel getExperienceLevels(ClassType t, int Level = 1)
+        public static ClassExperienceLevel getExperienceLevels(ClassType t, int Level = 1)
         {
+            AddExperienceLevels();
             return experienceLevels[t].First(l => l.Level == Level);
         }
-        private List<ClassExperienceLevel> FighterExperienceLevels()
+        public static ClassExperienceLevel GetLevelByExperience(ClassType t, int experience)
+        {
+            AddExperienceLevels();
+            var x = experienceLevels[t].Last(exp => exp.Experience <= experience);
+            return x;
+        }
+        public static SavingThrow SetupSavingThrows(ClassGroup t, int Level = 1)
+        {
+            return SavingThrowManager.GetSavingThrow(t, Level);
+        }
+        private static List<ClassExperienceLevel> FighterExperienceLevels()
         {
             List<ClassExperienceLevel> returnFighterExpLevels = new List<ClassExperienceLevel>
             {
@@ -46,7 +58,7 @@ namespace ADD2E_Core.Services
             };
             return returnFighterExpLevels;
         }
-        private List<ClassExperienceLevel> WizardExperienceLevels()
+        private static List<ClassExperienceLevel> WizardExperienceLevels()
         {
             List<ClassExperienceLevel> returnWizardExpLevels = new List<ClassExperienceLevel>
             {

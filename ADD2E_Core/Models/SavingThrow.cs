@@ -5,10 +5,18 @@ using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
 namespace ADD2E_Core.Models
 {
-    public class SavingThrow : ISavingThrow
+    public class SavingThrow
     {
-        public List<SavingThrowType>ThrowType { get; set; }
-        public int Level { get; set; } 
-        public int Value { get; set; }
+        public int Level = 1;
+        public ParalyzationSave Paralyzation;
+        public PoisonSave Poison;
+        public DeathMagicSave DeathMagic;
+        public RodSave Rod;
+        public StaffSave Staff;
+        public WandSave Wand;
+        public PetrificationSave Petrification;
+        public PolymorphSave Polymorph;
+        public BreathWeaponSave BreathWeapon;
+        public SpellSave Spell;
     }
 }

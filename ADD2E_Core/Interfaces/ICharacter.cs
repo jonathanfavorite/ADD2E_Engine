@@ -14,12 +14,14 @@ namespace ADD2E_Core.Interfaces
         int? HitPoints { get; set; }
         int TmpHitPoints { get; set; }
         int ArmorClass { get; set; }
+        AlignmentList Alignment { get; set; }
         bool RandomizeStats { get; set; }
         IRace Race { get; set; }
         Money CoinPurse { get; set; }
         IClass Class { get; set; }
         ThacoScore Thaco { get; set; }
         AbilityScores AbilityScores { get; set; }
+        SavingThrow SavingThrows { get; set; }
         List<IEquipment> Equipment { get; set; } 
         IWeapon PrimaryWeapon { get; set; }
         ClassExperienceLevel LevelInfo { get; set; }

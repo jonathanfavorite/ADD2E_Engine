@@ -15,6 +15,16 @@ namespace ADD2E_Core.Enums
         HP,
         AC,
         DAMAGE,
-        HIT
+        HIT,
+        Paralyzation,
+        Poison,
+        DeathMagic,
+        Rod,
+        Staff,
+        Wand,
+        Petrification,
+        Polymorph,
+        BreathWeapon,
+        Spell
     }
 }

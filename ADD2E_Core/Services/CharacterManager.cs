@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace ADD2E_Core.Services
 {
-    public class CharacterManager
+    public static class CharacterManager
     {
-        public bool CanRacePlayClass(IRace thatRace, ClassType thatClass)
+        public static bool CanRacePlayClass(IRace thatRace, ClassType thatClass)
         {
             if (thatRace.PlayableClasses.Contains(thatClass))
             {
@@ -24,7 +24,7 @@ namespace ADD2E_Core.Services
         }
 
         #region Set/Get Race
-        public IRace SetPlayerRace(RaceType rType)
+        public static IRace SetPlayerRace(RaceType rType)
         {
             if (rType == RaceType.Human)
             {
@@ -39,18 +39,18 @@ namespace ADD2E_Core.Services
                 return null;
             }
         }
-        private IRace SetHuman()
+        private static IRace SetHuman()
         {
             return new Human();
         }
-        private IRace SetElf()
+        private static IRace SetElf()
         {
             return new Human();
         }
         #endregion
 
         #region Set Class
-        public IClass setCharacterClass(ClassType cType)
+        public static IClass setCharacterClass(ClassType cType)
         {
             if(cType == ClassType.Fighter)
             {
@@ -63,8 +63,8 @@ namespace ADD2E_Core.Services
         }
         #endregion
 
-        #region Set Hitpoints
-        public int SetHitPoints(int Level, IClass Class, AbilityScores AbilityScores, int? CurrentHP)
+        #region Set Hitpoints / Update HitPoints
+        public static int SetInitialHitPoints(int Level, IClass Class, AbilityScores AbilityScores, int? CurrentHP)
         {
             int returnHP = 0;
             if (CurrentHP == null)
@@ -78,13 +78,13 @@ namespace ADD2E_Core.Services
                     for (int i = 0; i <= Level - 1; i++)
                     {
                         int roll = 0;
-                        if (i != 0)
+                        if (i == 0)
                         {
-                            roll = DiceManager.Roll(1, Class.HitDie).Total + AbilityScores.Constitution.HitPointAdjustment;
+                            roll = Class.HitDie;
                         }
                         else
                         {
-                            roll = Class.HitDie;
+                            roll = DiceManager.Roll(1, Class.HitDie).Total + AbilityScores.Constitution.HitPointAdjustment;
                         }
                         returnHP += roll;
                     }
@@ -96,11 +96,21 @@ namespace ADD2E_Core.Services
             }
             return returnHP;
         }
+
+        public static int UpdateHitPoints(IClass Class, AbilityScores AbilityScores, int CurrentHP, int newLevels = 1)
+        {
+            int newRoll = CurrentHP;
+            for(int i = 0; i <= newLevels - 1; i++)
+            {
+                newRoll += DiceManager.Roll(1, Class.HitDie).Total + AbilityScores.Constitution.HitPointAdjustment;
+            }
+            return newRoll;
+        }
         #endregion
 
         #region Ability Scores
         
-        public AbilityScores RandomizeAbilityScores(AbilityScores abilityScores)
+        public static AbilityScores RandomizeAbilityScores(AbilityScores abilityScores)
         {
             AbilityScoreManager abilityScoreRules = new AbilityScoreManager();
             abilityScores.Strength = abilityScoreRules.SetStrength(DiceManager.FourDSixDropTheLowest());
@@ -111,7 +121,7 @@ namespace ADD2E_Core.Services
             abilityScores.Charisma = abilityScoreRules.SetCharisma(DiceManager.FourDSixDropTheLowest());
             return abilityScores;
         }
-        public AbilityScores UpdateAbilityScores(AbilityScores abilityScores)
+        public static AbilityScores UpdateAbilityScores(AbilityScores abilityScores)
         {
             AbilityScoreManager abilityScoreRules = new AbilityScoreManager();
             abilityScores.Strength = abilityScoreRules.SetStrength(abilityScores.Strength.Value);
@@ -125,20 +135,43 @@ namespace ADD2E_Core.Services
 
         #endregion
 
-        #region Thaco and AC
-        public ThacoScore SetupThaco(ClassGroup CG, int Level)
+        #region Thaco, AC & Saving Throws
+        public static ThacoScore SetupThaco(ClassGroup CG, int Level)
         {
             ThacoManager thacoManager = new ThacoManager();
             return thacoManager.getThaco(CG, Level);
         }
-        public int SetupAC(List<IEquipment> equipment)
+        public static int SetupAC(List<IEquipment> equipment)
         {
             return CharacterCombatMaths.CalculateArmorClass(equipment);
         }
         #endregion
 
+        #region Adding Experience
+        public static ExperienceResponse AddEXP(int currentExp, int nextLevelExp, ClassType t, int newExp)
+        {
+            ExperienceResponse r = new ExperienceResponse();
+            int addedExp = currentExp + newExp;
+            if(currentExp + newExp >= nextLevelExp)
+            {
+                // Character Leveled Up
+                r.ResponseType = CharacterResponseTypes.LEVELEDUP;
+                ClassExperienceLevel newLevel = ClassManager.GetLevelByExperience(t, addedExp);
+                ClassExperienceLevel nextLevel = ClassManager.getExperienceLevels(t, newLevel.Level);
+                r.NewExperienceLevel = newLevel;
+                r.NextExperienceLevel = nextLevel;
+            }
+            r.ExperienceTotal = addedExp;
+            return r;
+        }
+        public static double CurrentLevelCompletedPercentage(int currentExp, int nextLevelExp)
+        {
+            return Convert.ToDouble(Math.Round(((decimal)currentExp / (decimal)nextLevelExp) * 100, 2));
+        }
+        #endregion
+
         #region Inventory 
-        public List<IEquipment> AddItem(IEquipment item, int quantity = 1)
+        public static List<IEquipment> AddItem(IEquipment item, int quantity = 1)
         {
             List<IEquipment> returnEquipment = new List<IEquipment>();
             for(int i = 0; i <= quantity - 1; i++)
@@ -150,7 +183,7 @@ namespace ADD2E_Core.Services
             }
             return returnEquipment;
         }
-        public List<IEquipment> RemoveItem(IEquipment item, int quantity = 1, List<IEquipment> myEquipment = null)
+        public static List<IEquipment> RemoveItem(IEquipment item, int quantity = 1, List<IEquipment> myEquipment = null)
         {
             // Search to see if it exists
             var searchItem = myEquipment.FindAll(x => x.Name == item.Name).ToList();
@@ -162,11 +195,11 @@ namespace ADD2E_Core.Services
             return myEquipment;
         }
 
-        public Money AddMoney(Money coinpurse, Money newMoney)
+        public static Money AddMoney(Money coinpurse, Money newMoney)
         {
             return MoneyManager.addMoney(coinpurse, newMoney);
         }
-        public Money RemoveMoney(Money coinpurse, Money newMoney)
+        public static Money RemoveMoney(Money coinpurse, Money newMoney)
         {
             return MoneyManager.removeMoney(coinpurse, newMoney);
         }
@@ -174,7 +207,7 @@ namespace ADD2E_Core.Services
         #endregion
 
         #region Weapons
-        public List<IEquipment> NoLongerEquipped(IEquipment item, List<IEquipment> allItems)
+        public static List<IEquipment> NoLongerEquipped(IEquipment item, List<IEquipment> allItems)
         {
             var searchItem = allItems.First(x => x == item);
             if (searchItem != null)
@@ -184,7 +217,7 @@ namespace ADD2E_Core.Services
             return allItems;
         }
         
-        public List<IEquipment> NoLongerEquippedBySlotType(EquipmentSlot slot, List<IEquipment> allItems)
+        public static List<IEquipment> NoLongerEquippedBySlotType(EquipmentSlot slot, List<IEquipment> allItems)
         {
             List<IEquipment> retItems = new List<IEquipment>();
             foreach(IEquipment item in allItems)

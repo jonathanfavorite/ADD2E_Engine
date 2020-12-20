@@ -4,9 +4,8 @@ using System.Text;
 using ADD2E_Core.Enums;
 namespace ADD2E_Core.Interfaces
 {
-    public interface ISavingThrow
+    public interface ICharacterResponse
     {
-        SavingThrowType Type { get; set; }
-        int Value { get; set; }
+        CharacterResponseTypes ResponseType { get; set; }
     }
 }

@@ -7,5 +7,7 @@ namespace ADD2E_Core.Interfaces
     public interface IPlayerCharacter : ICharacter
     {
         string OwnerName { get; set; }
+        double CurrentLevelProgressExp { get; set; }
+        void AddExperience(int exp);
     }
 }

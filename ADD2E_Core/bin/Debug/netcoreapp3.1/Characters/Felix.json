@@ -1,0 +1,291 @@
+{
+  "PlayerID": 2,
+  "OwnerName": null,
+  "MainCharacter": true,
+  "Name": "Felix",
+  "Level": 1,
+  "HitPoints": 10,
+  "TmpHitPoints": 10,
+  "ArmorClass": 6,
+  "RandomizeStats": true,
+  "Race": {
+    "$type": "ADD2E_Core.Models.Human, ADD2E_Core",
+    "Name": "Human",
+    "PlayableClasses": [
+      1,
+      6,
+      5,
+      3
+    ]
+  },
+  "CoinPurse": {
+    "Copper": 0,
+    "Silver": 0,
+    "Gold": 0
+  },
+  "Class": {
+    "$type": "ADD2E_Core.Models.Fighter, ADD2E_Core",
+    "Name": "Fighter",
+    "PrimeRequirement": [
+      0
+    ],
+    "HitDie": 10,
+    "ClassGroup": 2,
+    "AllowedRaces": [
+      0
+    ],
+    "MinimumAbilityScoreRequirements": {
+      "Strength": 9
+    }
+  },
+  "Thaco": {
+    "Value": 20,
+    "Level": 1,
+    "ClassGroup": 2
+  },
+  "AbilityScores": {
+    "Strength": {
+      "Name": 0,
+      "Value": 8,
+      "HitProb": 0,
+      "MaxPress": 90,
+      "OpenDoors": 5,
+      "DamageAdjustment": 0,
+      "BendBarsPercentage": 0.01
+    },
+    "Dexterity": {
+      "Name": 1,
+      "Value": 11,
+      "ReactionAdjustment": 0,
+      "MissleAttackAdjustment": 0,
+      "DefenceAdjustment": 0
+    },
+    "Constitution": {
+      "Name": 2,
+      "Value": 12,
+      "HitPointAdjustment": 0,
+      "SystemShockPercentage": 0.8,
+      "ResurrectionSurvivalPercentage": 0.85,
+      "PoisionSave": 0,
+      "WarriorsHPBonus": 0
+    },
+    "Intelligence": {
+      "Name": 5,
+      "Value": 8,
+      "LanguagesKnown": 1,
+      "SpellLevel": 0,
+      "ChanceToLearnSpellPercentage": 0.0,
+      "MaxNumberOfSpells": 0
+    },
+    "Wisdom": {
+      "Name": 3,
+      "Value": 10,
+      "MagicalDefenceAdjustment": 0,
+      "BonusSpells": 0,
+      "ChanceOfSpellFailPercentage": 0.15
+    },
+    "Charisma": {
+      "Name": 4,
+      "Value": 12,
+      "MaximumHenchmen": 5,
+      "LoyaltyBase": 0,
+      "ReactionAdjustment": 0
+    }
+  },
+  "Equipment": [
+    {
+      "$type": "ADD2E_Core.Models.Weapon, ADD2E_Core",
+      "Name": "Bastard Sword (One hand)",
+      "Category": 61,
+      "Price": {
+        "Copper": 0,
+        "Silver": 50,
+        "Gold": 1
+      },
+      "Weight": 0,
+      "AttackType": 2,
+      "Size": 0,
+      "SpeedFactor": 0,
+      "ItemID": "ADD2E_Core.Models.Weapon_58949",
+      "EquipmentType": 5,
+      "SlotType": 11,
+      "Description": "",
+      "Weareable": true,
+      "Consumeable": false,
+      "Equipped": true,
+      "TwoHanded": false,
+      "StatMods": [],
+      "Damage": {
+        "Amount": 1,
+        "SidedDie": 8,
+        "Bonus": 1
+      }
+    },
+    {
+      "$type": "ADD2E_Core.Models.Gear, ADD2E_Core",
+      "ItemID": "ADD2E_Core.Models.Gear_7916",
+      "EquipmentType": 0,
+      "Name": "ChainMail Chest Piece",
+      "Description": "",
+      "Price": {
+        "Copper": 0,
+        "Silver": 50,
+        "Gold": 0
+      },
+      "SlotType": 4,
+      "Weareable": true,
+      "Consumeable": false,
+      "Equipped": true,
+      "AC": 7,
+      "ACBonus": null,
+      "ArmorType": 6,
+      "StatMods": []
+    },
+    {
+      "$type": "ADD2E_Core.Models.Gear, ADD2E_Core",
+      "ItemID": "ADD2E_Core.Models.Gear_50400",
+      "EquipmentType": 0,
+      "Name": "Wooden Shield",
+      "Description": "",
+      "Price": {
+        "Copper": 0,
+        "Silver": 23,
+        "Gold": 0
+      },
+      "SlotType": 12,
+      "Weareable": true,
+      "Consumeable": false,
+      "Equipped": true,
+      "AC": 10,
+      "ACBonus": null,
+      "ArmorType": 1,
+      "StatMods": [
+        {
+          "Modifier": 7,
+          "Add": true,
+          "Value": 1
+        }
+      ]
+    }
+  ],
+  "PrimaryWeapon": {
+    "$type": "ADD2E_Core.Models.Weapon, ADD2E_Core",
+    "Name": "Bastard Sword (One hand)",
+    "Category": 61,
+    "Price": {
+      "Copper": 0,
+      "Silver": 50,
+      "Gold": 1
+    },
+    "Weight": 0,
+    "AttackType": 2,
+    "Size": 0,
+    "SpeedFactor": 0,
+    "ItemID": "ADD2E_Core.Models.Weapon_58949",
+    "EquipmentType": 5,
+    "SlotType": 11,
+    "Description": "",
+    "Weareable": true,
+    "Consumeable": false,
+    "Equipped": true,
+    "TwoHanded": false,
+    "StatMods": [],
+    "Damage": {
+      "Amount": 1,
+      "SidedDie": 8,
+      "Bonus": 1
+    }
+  },
+  "SecondaryWeapon": null,
+  "EquippedGear": [
+    {
+      "$type": "ADD2E_Core.Models.Weapon, ADD2E_Core",
+      "Name": "Bastard Sword (One hand)",
+      "Category": 61,
+      "Price": {
+        "Copper": 0,
+        "Silver": 50,
+        "Gold": 1
+      },
+      "Weight": 0,
+      "AttackType": 2,
+      "Size": 0,
+      "SpeedFactor": 0,
+      "ItemID": "ADD2E_Core.Models.Weapon_58949",
+      "EquipmentType": 5,
+      "SlotType": 11,
+      "Description": "",
+      "Weareable": true,
+      "Consumeable": false,
+      "Equipped": true,
+      "TwoHanded": false,
+      "StatMods": [],
+      "Damage": {
+        "Amount": 1,
+        "SidedDie": 8,
+        "Bonus": 1
+      }
+    },
+    {
+      "$type": "ADD2E_Core.Models.Gear, ADD2E_Core",
+      "ItemID": "ADD2E_Core.Models.Gear_7916",
+      "EquipmentType": 0,
+      "Name": "ChainMail Chest Piece",
+      "Description": "",
+      "Price": {
+        "Copper": 0,
+        "Silver": 50,
+        "Gold": 0
+      },
+      "SlotType": 4,
+      "Weareable": true,
+      "Consumeable": false,
+      "Equipped": true,
+      "AC": 7,
+      "ACBonus": null,
+      "ArmorType": 6,
+      "StatMods": []
+    },
+    {
+      "$type": "ADD2E_Core.Models.Gear, ADD2E_Core",
+      "ItemID": "ADD2E_Core.Models.Gear_50400",
+      "EquipmentType": 0,
+      "Name": "Wooden Shield",
+      "Description": "",
+      "Price": {
+        "Copper": 0,
+        "Silver": 23,
+        "Gold": 0
+      },
+      "SlotType": 12,
+      "Weareable": true,
+      "Consumeable": false,
+      "Equipped": true,
+      "AC": 10,
+      "ACBonus": null,
+      "ArmorType": 1,
+      "StatMods": [
+        {
+          "Modifier": 7,
+          "Add": true,
+          "Value": 1
+        }
+      ]
+    }
+  ],
+  "LevelInfo": {
+    "Level": 1,
+    "Experience": 0,
+    "HitDiceAmount": 1,
+    "HitDiceBonus": 0
+  },
+  "NextLevelInfo": {
+    "Level": 2,
+    "Experience": 2000,
+    "HitDiceAmount": 2,
+    "HitDiceBonus": 0
+  },
+  "Experience": 0,
+  "RaceType": 1,
+  "ClassType": 1
+}

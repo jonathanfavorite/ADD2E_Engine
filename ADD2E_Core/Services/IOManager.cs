@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using ADD2E_Core.Models;
 using ADD2E_Core.Interfaces;
-using Newtonsoft.Json.Converters;
+//using Newtonsoft.Json.Converters;
 
 namespace ADD2E_Core.Services
 {
     public class IOManager
     {
+        /*
         private void CreateSaveDirectoryIfDoesntExist()
         {
             if (!Directory.Exists("./Characters"))
@@ -52,5 +53,6 @@ namespace ADD2E_Core.Services
             }
             return returnChar;
         }
+        */
     }
 }

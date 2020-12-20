@@ -16,27 +16,32 @@ namespace ADD2E_Core.Services
 
         public void ShowCharacterInfo(ICharacter p, bool detailed = false)
         {
-            Console.WriteLine($" \r\n #############################################");
-            Console.WriteLine($" ########### Player Information ##############");
-            Console.WriteLine($" #############################################");
-
-            Console.WriteLine($"\r\n Player Name: {p.Name}");
-            Console.WriteLine($" Class: {p.Class.Name}");
-            Console.WriteLine($" Race: {p.Race.Name}");
-            Console.WriteLine($" Level: {p.Level}");
-            Console.WriteLine($" Experience: {p.LevelInfo.Experience} / {p.NextLevelInfo.Experience}");
-            Console.WriteLine($" HP: {p.HitPoints} / {p.TmpHitPoints}");
-            Console.WriteLine($" Thaco: {p.Thaco.Value}");
-            Console.WriteLine($" AC: {p.ArmorClass}");
-
-            if (detailed)
+            if (p is IPlayerCharacter c)
             {
-                ShowAbilityScores(p);
-                ShowEquipmentForCharacter(p);
-                ShowTotalVendoredAmount(p);
-                ShowCoinPurse(p);
-                //ShowPrimaryWeapon(p);
-                ShowEquippedGear(p);
+                Console.WriteLine($" \r\n #############################################");
+                Console.WriteLine($" ########### Player Information ##############");
+                Console.WriteLine($" #############################################");
+
+                Console.WriteLine($"\r\n Player Name: {p.Name}");
+                Console.WriteLine($" Class: {p.Class.Name}");
+                Console.WriteLine($" Race: {p.Race.Name}");
+                Console.WriteLine($" Level: {p.Level}");
+                Console.WriteLine($" Experience: {p.Experience} / {p.NextLevelInfo.Experience} ({c.CurrentLevelProgressExp}% completed)");
+                Console.WriteLine($" HP: {p.HitPoints} / {p.TmpHitPoints}");
+                Console.WriteLine($" Thaco: {p.Thaco.Value}");
+                Console.WriteLine($" AC: {p.ArmorClass}");
+                Console.WriteLine($" Alignment: {p.Alignment}");
+
+                if (detailed)
+                {
+                    ShowAbilityScores(p);
+                    ShowSavingThrows(p);
+                    ShowEquipmentForCharacter(p);
+                    ShowTotalVendoredAmount(p);
+                    ShowCoinPurse(p);
+                    //ShowPrimaryWeapon(p);
+                    ShowEquippedGear(p);
+                }
             }
         }
         public void ShowAbilityScores(ICharacter p)
@@ -48,6 +53,21 @@ namespace ADD2E_Core.Services
             Console.WriteLine($" Intelligence: {p.AbilityScores.Strength.Value}");
             Console.WriteLine($" Widsom:       {p.AbilityScores.Wisdom.Value} ({AbilityAdj(p.AbilityScores.Wisdom.MagicalDefenceAdjustment)})");
             Console.WriteLine($" Charisma:     {p.AbilityScores.Charisma.Value} ({AbilityAdj(p.AbilityScores.Charisma.ReactionAdjustment)})");
+        }
+
+        public void ShowSavingThrows(ICharacter p)
+        {
+            Console.WriteLine($"\r\n-- Saving Throws --");
+            Console.WriteLine($" Paralyzation:  {p.SavingThrows.Paralyzation.Value}");
+            Console.WriteLine($" Poison:        {p.SavingThrows.Poison.Value}");
+            Console.WriteLine($" Death Magic:   {p.SavingThrows.DeathMagic.Value}");
+            Console.WriteLine($" Rod:           {p.SavingThrows.Rod.Value}");
+            Console.WriteLine($" Staff:         {p.SavingThrows.Staff.Value}");
+            Console.WriteLine($" Wand:          {p.SavingThrows.Wand.Value}");
+            Console.WriteLine($" Petrification: {p.SavingThrows.Petrification.Value}");
+            Console.WriteLine($" Polymorph:     {p.SavingThrows.Polymorph.Value}");
+            Console.WriteLine($" Breath Weapon: {p.SavingThrows.BreathWeapon.Value}");
+            Console.WriteLine($" Spell:         {p.SavingThrows.Spell.Value}");
         }
         private string AbilityAdj(int adjustment)
         {

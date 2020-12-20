@@ -1,183 +1,109 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
 using ADD2E_Core.Models;
+using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
 using ADD2E_Core.Exceptions;
-using ADD2E_Core.Interfaces;
 using ADD2E_Core.Extensions;
-using System.Threading;
 
 namespace ADD2E_Core.Services
 {
-    public class CombatManager
+    public static class CombatManager
     {
-        private int TurnCount = 0;
-        private int CurrentPlayerTurn = 0;
-        private int TotalPlayers = 0;
-        private Dictionary<int, ICharacter> members = new Dictionary<int, ICharacter>();
-        private List<ICharacter> allchars;
-        public CombatManager(List<ICharacter> allChars)
-        { 
-            allchars = allChars;
-            members = RollInitiative(allchars);
-            TotalPlayers = members.Count;
-        }
-        public CombatResponse StartCombat()
+        private static ICharacter _person;
+        private static ICharacter _target;
+        private static IWeapon _specificWeapon;
+        public static CombatResponse MeleeAttack(ICharacter person, ICharacter target, IWeapon specificWeapon = null)
         {
-            int i = 0;
-            
-            while (SurvivingPlayers() > 1)
+            CombatResponse resp = new CombatResponse();
+            try
             {
-                TakeTurn();
-                DisplayCombatRealTime();
-                Thread.Sleep(100);
-                ++i;
-            }
-            Console.WriteLine("Fight is finished.");
-           // Console.WriteLine(SelectRandomPlayer().Name + " is the winner.");
-            return new CombatResponse { };
-        }
-        private CombatResponse TakeTurn()
-        {
-            
-            var atk = MeleeAttack();
-
-
-            ++CurrentPlayerTurn;
-            if (CurrentPlayerTurn >= TotalPlayers)
-            {
-                CurrentPlayerTurn = 0;
-            }
-            ++TurnCount;
-            return atk;
-        }
-        private CombatResponse MeleeAttack()
-        {
-            //Console.WriteLine("CurrentPlayerTurn: " + CurrentPlayerTurn + " (" + CurrentPlayer().Name + ")");
-            var victim = SelectRandomPlayer();
-            if (victim.TmpHitPoints > 0)
-            {
-                var attackRoll = GetAttackRoll();
-                var Damage = GetDamageRoll();
-
-                bool misses = false;
-                int victimToHitValue = victim.Thaco.Value - CharacterCombatMaths.CalculateArmorClass(victim.EquippedGear);
-
-                if (attackRoll < victimToHitValue)
+                _person = person;
+                _target = target;
+                if(specificWeapon != null)
                 {
+                    _specificWeapon = specificWeapon;
+                }
 
+                int attackRoll = GetAttackRoll();
+                int targetToHitValue = target.Thaco.Value - CharacterCombatMaths.CalculateArmorClass(target.EquippedGear);
+                
+                if(attackRoll < targetToHitValue)
+                {
+                    // Attack missed
+                    resp.response = string.Format($"{person.Name}'s attack misses against {target.Name}");
+                    resp.ResponseType = CombatResponseTypes.MISSED;
                 }
                 else
                 {
-                    misses = false;
+                    // Attack Hit
+                    int Damage = GetMeleeDamageTotal();
+                    resp.response = string.Format($"{person.Name} deals {Damage} damage to {target.Name}");
+                    resp.ResponseType = CombatResponseTypes.DAMAGED;
+                    if(target.TmpHitPoints <= 0)
+                    {
+                        resp.response = string.Format($"{person.Name} deals {Damage} and kills {target.Name}");
+                        resp.ResponseType = CombatResponseTypes.KILLED;
+                    }
+                    target = DoDamageToTarget(Damage);
                 }
-                /*
-                Console.WriteLine($"-- {CurrentPlayer().Name}'s Turn --");
-                Console.WriteLine($" (HP: {CurrentPlayer().TmpHitPoints}/{CurrentPlayer().HitPoints}   AC: {CurrentPlayer().ArmorClass})");
-                Console.WriteLine($" Attacking: {victim.Name}");
-                Console.WriteLine($" Weapon: {CurrentPlayer().PrimaryWeapon.Name} ({CurrentPlayer().PrimaryWeapon.Damage.Amount}d{CurrentPlayer().PrimaryWeapon.Damage.SidedDie})");
-                Console.WriteLine($" Roll: {attackRoll} (need to match or beat {victimToHitValue})");
-                Console.WriteLine($" Damage: {Damage}");
-                */
-                if (misses)
-                {
-                   // Console.WriteLine($" {CurrentPlayer().Name} rolls a {attackRoll} against {victim.Name} using {CurrentPlayer().PrimaryWeapon.Name}. Misses.");
-                }
-                else
-                {
-                    members = DoDamage(victim, Damage);
-                    //Console.WriteLine($" {CurrentPlayer().Name} rolls a {attackRoll} against {victim.Name} using {CurrentPlayer().PrimaryWeapon.Name}. Does {Damage} Damage.");
-                }
-
-                //Console.WriteLine();
+                resp.success = true;
             }
-            else
+            catch(InvalidCombatMechanicException ex)
             {
-                MeleeAttack();
+                resp.success = false;
+                resp.response = ex.Message;
             }
-
-            return new CombatResponse { };
+            return resp;
         }
-        private void DisplayCombatRealTime()
-        {
-            Console.Clear();
-            foreach(var character in members.Values)
-            {
-                if (character.TmpHitPoints < 1)
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                }
-                else
-                {
-                    Console.BackgroundColor = ConsoleColor.Black;
-                }
-                Console.WriteLine($"{character.Name} HP: {character.TmpHitPoints}");
-            }
-            Console.BackgroundColor = ConsoleColor.Black;
-        }
-        private int GetAttackRoll()
+        private static int GetAttackRoll()
         {
             var baseAttackRoll = DiceManager.Roll(1, 21).Total;
-            var bonusAttackAdjustment = CharacterCombatMaths.TotalHitAdjustments(CurrentPlayer());
+            var bonusAttackAdjustment = CharacterCombatMaths.TotalHitAdjustments(_person);
             var attackRoll = baseAttackRoll + bonusAttackAdjustment;
             return attackRoll;
         }
-        private int GetDamageRoll()
+        private static int GetMeleeDamageTotal()
         {
-            var baseDamageRoll = DiceManager.Roll(CurrentPlayer().PrimaryWeapon.Damage.Amount, CurrentPlayer().PrimaryWeapon.Damage.SidedDie).Total;
+            int baseDamageRoll;
+            if(_specificWeapon != null)
+            {
+                baseDamageRoll = DiceManager.Roll(_person.PrimaryWeapon.Damage.Amount, _specificWeapon.Damage.SidedDie).Total;
+            }
+            else
+            {
+                baseDamageRoll = DiceManager.Roll(_person.PrimaryWeapon.Damage.Amount, _person.PrimaryWeapon.Damage.SidedDie).Total;
+            }
             var bonusDamageAdjustment = 1;
             var DamageRoll = baseDamageRoll + bonusDamageAdjustment;
             return DamageRoll;
-
         }
-        private Dictionary<int, ICharacter> DoDamage(ICharacter c, int damage)
+        private static ICharacter DoDamageToTarget(int damage)
         {
-            foreach(var character in members.Values)
+            _target.TmpHitPoints -= damage;
+            if(_target.TmpHitPoints < 0)
             {
-                if(character == c)
-                {
-                    character.TmpHitPoints -= damage;
-                }
+                _target.TmpHitPoints = 0;
             }
-            return members;
+            return _target;
         }
-        private ICharacter CurrentPlayer()
-        {
-            return members.ElementAt(CurrentPlayerTurn).Value;
-        }
-        private ICharacter SelectRandomPlayer()
-        {
-            Random r = new Random();
-            var notCurrentPlayer = members.Where(x => x.Value.PlayerID != CurrentPlayer().PlayerID && x.Value.TmpHitPoints > 0);
-            int count = notCurrentPlayer.Count();
-            var randomPlayer = notCurrentPlayer.ElementAt(r.Next(0, count));
-            return randomPlayer.Value;
-        }
-        private int SurvivingPlayers()
-        {
-            var notCurrentPlayer = members.Where(x => x.Value.TmpHitPoints > 0);
-            return notCurrentPlayer.Count();
-        }
-        private Dictionary<int, ICharacter> RollInitiative(List<ICharacter> allChars)
+        private static Dictionary<int, ICharacter> RollInitiative(List<ICharacter> allCharacters)
         {
             Random r = new Random();
             var returnOrder = new Dictionary<int, ICharacter>();
-            for(int i = 0; i <= allChars.Count - 1; i++)
+            for (int i = 0; i <= allCharacters.Count - 1; i++)
             {
                 int randNumber = r.Next(1, 1000001);
                 if (returnOrder.ContainsKey(randNumber))
                 {
                     randNumber = r.Next(1, 1000001);
                 }
-                returnOrder.Add(randNumber, allChars[i]);
+                returnOrder.Add(randNumber, allCharacters[i]);
             }
             var orderedList = returnOrder.OrderBy(x => x.Key).ToDictionary(t => t.Key, v => v.Value);
             return orderedList;
         }
-        
-
     }
 }

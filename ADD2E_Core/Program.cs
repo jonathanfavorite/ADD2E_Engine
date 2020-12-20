@@ -108,25 +108,39 @@ namespace ADD2E_Core
           
 
             var Felix = CreateMainCharacter("Felix");
-            var GoblinGroup = CreateGoblins(20);
+            var GoblinGroup = CreateGoblins(0);
 
-            UIManager.ShowCharacterInfo(Felix, true);
+            //UIManager.ShowCharacterInfo(Felix, true);
+
+            var iomanager = new IOManager();
+           // await iomanager.SaveCharacter(Felix);
 
             List<ICharacter> allChars = new List<ICharacter>
             {
-                Felix
+               Felix
             };
 
-            UIManager.ShowCharacterInfo(Felix, true);
+            //UIManager.ShowCharacterInfo(Felix, true);
 
             for (int i = 0; i <= GoblinGroup.Count - 1; i++)
             {
                 allChars.Add(GoblinGroup[i]);
             }
 
-            CombatManager combat = new CombatManager(allChars);
-           // combat.StartCombat();
+          // UIManager.ShowCharacterInfo(Felix, true);
+            Console.WriteLine("");
+            Console.WriteLine("");
 
+            if (Felix is IPlayerCharacter c)
+            {
+                c.AddExperience(16000);
+            }
+          
+            UIManager.ShowCharacterInfo(Felix, true);
+
+            // var MeleeAttack = CombatManager.MeleeAttack(Felix, GoblinGroup[0]);
+            // Console.WriteLine($"Success:   {MeleeAttack.success}");
+            //Console.WriteLine($"Response:  {MeleeAttack.response}");
 
             Console.ReadLine();
         }
@@ -139,10 +153,18 @@ namespace ADD2E_Core
                 Level = 1,
                 RaceType = RaceType.Human,
                 ClassType = ClassType.Fighter,
-                RandomizeStats = true,
-                MainCharacter = true
+                MainCharacter = true,
+                OwnerName = "Jonathan Favorite",
+                AbilityScores =
+                {
+                    Constitution = { Value = 18 },
+                    Strength = { Value = 18 },
+                    Dexterity = { Value = 18 },
+                    Charisma = { Value = 18 },
+                    Intelligence = { Value = 18 },
+                    Wisdom = { Value = 18 }
+                }
             });
-            Character.CreateCharacter();
 
             IWeapon bastardSword = EquipmentFactory.CreateWeapon(new Weapon
             {
@@ -175,9 +197,20 @@ namespace ADD2E_Core
                 Price = { Silver = 23 }
             });
 
+            IGear MagicRing = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Glowing Magical Ring",
+                SlotType = EquipmentSlot.RING,
+                StatMods = { new StatModifier { Modifier = ItemBonusList.BreathWeapon, Value = 1} },
+                Price = { Gold = 100 }
+            });
+
+            Character.AddItem(MagicRing, 1);
             Character.AddItem(bastardSword, 1);
             Character.AddItem(chainMailChest, 1);
             Character.AddItem(WoodenShield, 1);
+
+            Character.EquipItem(MagicRing);
             Character.EquipItem(bastardSword);
             Character.EquipItem(chainMailChest);
             Character.EquipItem(WoodenShield);
@@ -193,8 +226,8 @@ namespace ADD2E_Core
             {
                 ICharacter goblin = CharacterFactory.CreateCharacter(new PlayerCharacter
                 {
-                    Name = "Goblin" + i,
-                    Level = 1,
+                    Name = "Goblin_" + (i + 1),
+                    Level = rMoney.Next(1,3),
                     ClassType = ClassType.Fighter,
                     RaceType = RaceType.Human,
                     RandomizeStats = true,
