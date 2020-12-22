@@ -7,14 +7,14 @@ namespace ADD2E_Core.Services
 {
     public static class DiceManager
     {
-        public static DiceRollResponse Roll(int amount, int sides)
+        public static DiceRollResponse Roll(int amount, int sides, int minNumber = 1)
         {
             List<DiceRoll> rollList = new List<DiceRoll>();
             int Total = 0;
             for (int i = 0; i <= amount - 1; i++)
             {
                 Random r = new Random();
-                int thisRoll = r.Next(1, sides);
+                int thisRoll = r.Next(minNumber, sides + 1);
                 var tmpRoll = new DiceRoll
                 {
                     RollToText = string.Format($"{amount}d{sides}"),
@@ -28,7 +28,7 @@ namespace ADD2E_Core.Services
         public static int RollOnce(int sidedDie)
         {
             Random r = new Random();
-            return r.Next(1, sidedDie);
+            return r.Next(1, sidedDie + 1);
         }
         public static int FourDSixDropTheLowest()
         {

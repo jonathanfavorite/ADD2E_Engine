@@ -13,132 +13,50 @@ namespace ADD2E_Core
         static void AppStart()
         {
             UIManager = new UITestingManager();
-            // IOC Container register here
         }
         static async Task Main(string[] args)
         {
-
             AppStart();
-
-            #region Testing Player Zone
-            /*
-            PlayerCharacter Felix = new PlayerCharacter
-            {
-                Name = "Anduin",
-                Level = 10,
-                RaceType = RaceType.Human,
-                ClassType = ClassType.Fighter,
-                CoinPurse = { Gold = 3, Silver = 15, Copper = 55 },
-                RandomizeStats = true,
-                HitPoints = 100
-            };
-
-            IEquipment Cheese = EquipmentFactory.CreateItem(new Equipment
-            {
-                Name = "Cheese",
-                Description = "Some slightly moldy cheese.",
-                Price = { Copper = 5 },
-                Consumeable = true,
-                EquipmentType = EquipmentType.Food
-            });
-            IWeapon Thunderfury = EquipmentFactory.CreateWeapon(new Weapon
-            {
-                Name = "Thunderfury, Blessed Blade of the Windseeker",
-                AttackType = WeaponAttackType.S,
-                Category = WeaponCategory.TwoHandedSword,
-                TwoHanded = true,
-                Price = { Gold = 500 },
-                SlotType = EquipmentSlot.PRIMARY,
-                WeaponMods =
-                {
-                    new WeaponBonus { Modifier = ItemBonusList.DAMAGE, Value = 5}
-                }
-            });
-            IGear LongsleeveShirt = EquipmentFactory.CreateGear(new Gear
-            {
-                Name = "Long Sleeve Shirt Red",
-                SlotType = EquipmentSlot.CHEST,
-                Price = {Copper = 50 }
-            });
-            IGear MagicalRing = EquipmentFactory.CreateGear(new Gear
-            {
-                Name = "Iridescent Gold Banded Ring",
-                SlotType = EquipmentSlot.RING,
-                Price = { Gold = 15000 },
-                WeaponMods =
-                {
-                    new WeaponBonus { Modifier = ItemBonusList.INTELLIGENCE, Value = 1}
-                }
-            });
-            IWeapon Shield = EquipmentFactory.CreateWeapon(new Weapon
-            {
-                Name = "Wooden Shield",
-                SlotType = EquipmentSlot.SECONDARY,
-                Price = {Gold = 1},
-                WeaponMods = {
-                    new WeaponBonus { Modifier = ItemBonusList.AC, Value = 2}
-                }
-            });
-            IGear OtherRing = EquipmentFactory.CreateGear(new Gear
-            {
-                Name = "Soulstained Ring of Empowerment",
-                SlotType = EquipmentSlot.RING,
-                Price = {Gold = 500},
-                WeaponMods =
-                {
-                    new WeaponBonus { Modifier = ItemBonusList.STRENGTH, Value = 1},
-                    new WeaponBonus { Modifier = ItemBonusList.HP, Value = 10}
-                }
-            });
-
-            Felix.AddItem(Shield);
-            Felix.AddItem(Cheese, 25); // 25 pieces of cheese? why not.
-            Felix.AddItem(Thunderfury);
-            Felix.AddItem(LongsleeveShirt);
-            Felix.AddItem(MagicalRing);
-            Felix.AddItem(OtherRing);
-
-            //Felix.EquipItem(Shield);
-            Felix.EquipItem(LongsleeveShirt);
-            Felix.EquipItem(Thunderfury);
-            Felix.EquipItem(MagicalRing);
-            Felix.EquipItem(OtherRing);
-            */
-            #endregion
-          
 
             var Felix = CreateMainCharacter("Felix");
             var GoblinGroup = CreateGoblins(0);
 
-            //UIManager.ShowCharacterInfo(Felix, true);
-
             var iomanager = new IOManager();
-           // await iomanager.SaveCharacter(Felix);
-
             List<ICharacter> allChars = new List<ICharacter>
             {
                Felix
             };
 
-            //UIManager.ShowCharacterInfo(Felix, true);
-
             for (int i = 0; i <= GoblinGroup.Count - 1; i++)
             {
-                allChars.Add(GoblinGroup[i]);
+                //allChars.Add(GoblinGroup[i]);
             }
 
-          // UIManager.ShowCharacterInfo(Felix, true);
+           UIManager.ShowCharacterInfo(Felix, true);
 
-            if (Felix is IPlayerCharacter c)
+            /*
+            for(int i = 0; i <= 5000; i++)
             {
-               // c.AddExperience(51234235);
+                if (Felix is IPlayerCharacter c)
+                {
+                    c.AddExperience(DiceManager.Roll(1, 2000, 1000).Total);
+                }
+                UIManager.ShowCharacterInfo(Felix, false);
+                UIManager.ShowSavingThrows(Felix);
+                System.Threading.Thread.Sleep(100);
+                if(Felix.Level == 30)
+                {
+                    break;
+                }
+                Console.Clear();
             }
-          
-            UIManager.ShowCharacterInfo(Felix, true);
+            */
+            
 
-            // var MeleeAttack = CombatManager.MeleeAttack(Felix, GoblinGroup[0]);
-            // Console.WriteLine($"Success:   {MeleeAttack.success}");
-            //Console.WriteLine($"Response:  {MeleeAttack.response}");
+           
+          
+           
+
 
             Console.ReadLine();
         }
@@ -153,22 +71,12 @@ namespace ADD2E_Core
                 ClassType = ClassType.Fighter,
                 MainCharacter = true,
                 RandomizeStats = true,
-                OwnerName = "Jonathan Favorite",
-                AbilityScores =
-                {
-                    
-                    Constitution = { Value = 8 },
-                    Strength = { Value = 8 },
-                    Dexterity = { Value = 8 },
-                    Charisma = { Value = 8 },
-                    Intelligence = { Value = 8 },
-                    Wisdom = { Value = 8 }
-                }
+                OwnerName = "Jonathan Favorite"
             });
 
-            IWeapon bastardSword = EquipmentFactory.CreateWeapon(new Weapon
+            IWeapon Sword = EquipmentFactory.CreateWeapon(new Weapon
             {
-                Name = "Bastard Sword (One hand)",
+                Name = "Testing Sword (One hand)",
                 AttackType = WeaponAttackType.S,
                 Category = WeaponCategory.BastardSwordOneHanded,
                 TwoHanded = false,
@@ -178,42 +86,144 @@ namespace ADD2E_Core
                 SlotType = EquipmentSlot.PRIMARY
             });
 
-            IGear chainMailChest = EquipmentFactory.CreateGear(new Gear
+            IGear Shield = EquipmentFactory.CreateGear(new Gear
             {
-                Name = "ChainMail Chest Piece",
-                AC = 7,
-                EquipmentType = EquipmentType.Clothing,
-                Price = { Silver = 50 },
-                SlotType = EquipmentSlot.CHEST,
-                ArmorType = ArmorTypeList.ChainMail
-            });
-
-            IGear WoodenShield = EquipmentFactory.CreateGear(new Gear
-            {
-                Name = "Wooden Shield",
+                Name = "Testing Shield",
                 ArmorType = ArmorTypeList.Shield,
                 SlotType = EquipmentSlot.SECONDARY,
-                StatMods = { new StatModifier { Modifier = ItemBonusList.AC, Value = 1} },
-                Price = { Silver = 23 }
+                AC = 0,
+                StatMods = { new StatModifier { Modifier = ItemBonusList.AC, Value = 2 } }
             });
 
-            IGear MagicRing = EquipmentFactory.CreateGear(new Gear
+            IGear Head = EquipmentFactory.CreateGear(new Gear
             {
-                Name = "Glowing Magical Ring",
-                SlotType = EquipmentSlot.RING,
-                StatMods = { new StatModifier { Modifier = ItemBonusList.BreathWeapon, Value = 1} },
-                Price = { Gold = 100 }
+                Name = "Testing Head",
+                AC = 6,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Silver = 50 },
+                SlotType = EquipmentSlot.HEAD,
+                ArmorType = ArmorTypeList.ChainMail,
             });
 
-            Character.AddItem(MagicRing, 1);
-            Character.AddItem(bastardSword, 1);
-            Character.AddItem(chainMailChest, 1);
-            Character.AddItem(WoodenShield, 1);
+            IGear NewHead = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Testing Head #1",
+                AC = 1,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Silver = 50 },
+                SlotType = EquipmentSlot.HEAD,
+                ArmorType = ArmorTypeList.PlateMail,
+            });
 
-            Character.EquipItem(MagicRing);
-            Character.EquipItem(bastardSword);
-            Character.EquipItem(chainMailChest);
-            Character.EquipItem(WoodenShield);
+            IGear Shoulder = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Testing Shoulder",
+                AC = 6,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Gold = 123 },
+                SlotType = EquipmentSlot.SHOULDER,
+                ArmorType = ArmorTypeList.Leather
+            });
+            IGear Chest = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Testing Chest",
+                AC = 6,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Gold = 123 },
+                SlotType = EquipmentSlot.CHEST,
+                ArmorType = ArmorTypeList.Leather
+            });
+            IGear Wrists = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Testing Wrist",
+                AC = 6,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Gold = 123 },
+                SlotType = EquipmentSlot.WRIST,
+                ArmorType = ArmorTypeList.Leather
+            });
+            IGear Hands = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Testing Hands",
+                AC = 6,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Gold = 123 },
+                SlotType = EquipmentSlot.HANDS,
+                ArmorType = ArmorTypeList.Leather
+            });
+            IGear Legs = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Testing Legs",
+                AC = 6,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Gold = 123 },
+                SlotType = EquipmentSlot.LEGS,
+                ArmorType = ArmorTypeList.Leather
+            });
+            IGear Feet = EquipmentFactory.CreateGear(new Gear
+            {
+                Name = "Testing Feet",
+                AC = 6,
+                EquipmentType = EquipmentType.Clothing,
+                Price = { Gold = 123 },
+                SlotType = EquipmentSlot.FEET,
+                ArmorType = ArmorTypeList.Leather
+            });
+
+            Character.AddItem(Head, 1);
+            Character.AddItem(NewHead, 1);
+            Character.AddItem(Shoulder, 1);
+            Character.AddItem(Chest, 1);
+            Character.AddItem(Wrists, 1);
+            Character.AddItem(Hands, 1);
+            Character.AddItem(Legs, 1);
+            Character.AddItem(Feet, 1);
+            Character.AddItem(Sword, 1);
+            Character.AddItem(Shield, 1);
+
+            Character.EquipItem(Head);
+            Character.EquipItem(NewHead);
+            Character.EquipItem(Shoulder);
+            Character.EquipItem(Chest);
+            Character.EquipItem(Wrists);
+            Character.EquipItem(Hands);
+            Character.EquipItem(Legs);
+            Character.EquipItem(Feet);
+            Character.EquipItem(Sword);
+            Character.EquipItem(Shield);
+
+
+            
+            ISpell MagicMissle = SpellFactory.CreateSpell(new Spell
+            {
+                SpellID = "magic_missles_level_1",
+                Name = "Magic Missle",
+                Level = 1,
+                School = {
+                    SpellSchool.Evocation
+                },
+                Range = { RangeType = SpellRangeType.Yards, yards = 60 },
+                Compontents = { SpellCompontents.V, SpellCompontents.S },
+                Duration = new SpellDurationInfo { DurationType = SpellDurationType.Instantaneous },
+                CastingTime = 1,
+                Classes =
+                {
+                    ClassType.Wizard
+                },
+                AOE = new AreaOfEffect
+                {
+                    Type = AOETypes.CUBE,
+                    AOESize = 10,
+                    Ruler = RulerTypes.Feet
+                },
+                SavingThrows =
+                {
+                    SavingThrowType.None
+                },
+                Description = "Use of magic missles spell creates up to five missles of magical energy that dart forth from the wizard's fingertip and unerringly strike their target. This includes enemy creatures in a melee."
+            });
+
+            Character.AddSpell(MagicMissle);
 
             return Character;
         }

@@ -62,7 +62,7 @@ namespace ADD2E_Core.Services
                 new ClassExperienceLevel { Level = 17, Experience = 2250000, HitDiceAmount = 9, HitDiceBonus = 24},
                 new ClassExperienceLevel { Level = 18, Experience = 2500000, HitDiceAmount = 9, HitDiceBonus = 27},
                 new ClassExperienceLevel { Level = 19, Experience = 2750000, HitDiceAmount = 9, HitDiceBonus = 30},
-                new ClassExperienceLevel { Level = 20, Experience = 300000, HitDiceAmount = 9, HitDiceBonus = 33}
+                new ClassExperienceLevel { Level = 20, Experience = 3000000, HitDiceAmount = 9, HitDiceBonus = 33}
             };
             return returnFighterExpLevels;
         }

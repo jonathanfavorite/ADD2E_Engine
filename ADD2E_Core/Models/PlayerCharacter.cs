@@ -5,6 +5,8 @@ using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
 using ADD2E_Core.Services;
 using ADD2E_Core.Exceptions;
+using System.Linq;
+
 namespace ADD2E_Core.Models
 {
     public class PlayerCharacter : IPlayerCharacter
@@ -31,6 +33,7 @@ namespace ADD2E_Core.Models
         public List<IEquipment> EquippedGear { get; set; } = new List<IEquipment>();
         public ClassExperienceLevel LevelInfo { get; set; }
         public ClassExperienceLevel NextLevelInfo { get; set; }
+        public List<ISpell> SpellBook { get; set; } = new List<ISpell>();
         public int Experience { get; set; } = 0;
         public double CurrentLevelProgressExp { get; set; } = 0.00;
         public RaceType RaceType { get; set; }
@@ -38,7 +41,7 @@ namespace ADD2E_Core.Models
 
         public void CreateCharacter()
         {
-            Console.WriteLine("Created Char");
+            Console.WriteLine($"Created Character {Name}");
             PlayerID = IDGenerator.nextID();
             Race = CharacterManager.SetPlayerRace(RaceType);
             if(CharacterManager.CanRacePlayClass(Race, ClassType))
@@ -67,7 +70,7 @@ namespace ADD2E_Core.Models
         {
             if (RandomizeStats)
             {
-                AbilityScores = CharacterManager.RandomizeAbilityScores(AbilityScores);
+                AbilityScores = CharacterManager.RandomizeAbilityScores(AbilityScores, Class);
             }
             else
             {
@@ -116,8 +119,8 @@ namespace ADD2E_Core.Models
         }
         public void AddExperience(int exp)
         {
-            Console.WriteLine($"Adding {exp} to {Name}");
-            Console.WriteLine($"Current Level: {Level}");
+            //Console.WriteLine($"Adding {exp} to {Name}");
+            //Console.WriteLine($"Current Level: {Level}");
             ExperienceResponse addExp = CharacterManager.AddEXP(Experience, NextLevelInfo.Experience, ClassType, exp);
             Experience = addExp.ExperienceTotal;
             if(addExp.ResponseType == CharacterResponseTypes.LEVELEDUP)
@@ -131,15 +134,15 @@ namespace ADD2E_Core.Models
                 var currentHitPointMax = HitPoints;
                 HitPoints = CharacterManager.UpdateHitPoints(Class, AbilityScores, Convert.ToInt32(currentHitPointMax), levelDifference);
                 
-                Console.WriteLine($"{Name} leveled up from {Level} to {addExp.NewExperienceLevel.Level}");
-                Console.WriteLine($"New Level: {addExp.NewExperienceLevel.Level}");
+                //Console.WriteLine($"{Name} leveled up from {Level} to {addExp.NewExperienceLevel.Level}");
+                //Console.WriteLine($"New Level: {addExp.NewExperienceLevel.Level}");
             }
             else
             {
                 //CurrentLevelProgressExp = CharacterManager.CurrentLevelCompletedPercentage(Experience, LevelInfo.Experience, NextLevelInfo.Experience);
             }
             RefreshCharacter();
-            Console.WriteLine($"Added {exp} experience. ({Experience} / {NextLevelInfo.Experience})\r\n");
+            //Console.WriteLine($"Added {exp} experience. ({Experience} / {NextLevelInfo.Experience})\r\n");
         }
         public void EquipItem(IEquipment item)
         {
@@ -167,6 +170,10 @@ namespace ADD2E_Core.Models
                 string exceptionMsg = string.Format($"{item.Name} is not a weapon or piece of gear.");
                 throw new InvalidEquipmentException(exceptionMsg);
             }
+        }
+        public void AddSpell(ISpell spell)
+        {
+            SpellBook.Add(spell);
         }
         private void EquipPrimary(IWeapon item)
         {
@@ -200,10 +207,27 @@ namespace ADD2E_Core.Models
         }
         private void EquipGear(IGear item)
         {
+            List<EquipmentSlot> UniqueSlots = new List<EquipmentSlot>
+            {
+                EquipmentSlot.HEAD,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.WRIST,
+                EquipmentSlot.HANDS,
+                EquipmentSlot.LEGS,
+                EquipmentSlot.FEET
+            };
+            if(UniqueSlots.Contains(item.SlotType))
+            {
+                var foundItemInEquipped = EquippedGear.OfType<IGear>().Any(x => x.SlotType == item.SlotType);
+                if(foundItemInEquipped)
+                {
+                    EquippedGear = CharacterManager.NoLongerEquippedBySlotType(item.SlotType, EquippedGear);
+                }
+            }
             item.Equipped = true;
             EquippedGear.Add(item);
         }
-
+        
 
     }
 }

@@ -111,15 +111,107 @@ namespace ADD2E_Core.Services
 
         #region Ability Scores
         
-        public static AbilityScores RandomizeAbilityScores(AbilityScores abilityScores)
+        public static AbilityScores RandomizeAbilityScores(AbilityScores abilityScores, IClass _char = null)
         {
             AbilityScoreManager abilityScoreRules = new AbilityScoreManager();
-            abilityScores.Strength = abilityScoreRules.SetStrength(DiceManager.FourDSixDropTheLowest());
-            abilityScores.Dexterity = abilityScoreRules.SetDexterity(DiceManager.FourDSixDropTheLowest());
-            abilityScores.Constitution = abilityScoreRules.SetConstitution(DiceManager.FourDSixDropTheLowest());
-            abilityScores.Intelligence = abilityScoreRules.SetIntelligence(DiceManager.FourDSixDropTheLowest());
-            abilityScores.Wisdom = abilityScoreRules.SetWisdom(DiceManager.FourDSixDropTheLowest());
-            abilityScores.Charisma = abilityScoreRules.SetCharisma(DiceManager.FourDSixDropTheLowest());
+
+            List<int> allRolls = new List<int>();
+            allRolls.Add(DiceManager.FourDSixDropTheLowest());
+            allRolls.Add(DiceManager.FourDSixDropTheLowest());
+            allRolls.Add(DiceManager.FourDSixDropTheLowest());
+            allRolls.Add(DiceManager.FourDSixDropTheLowest());
+            allRolls.Add(DiceManager.FourDSixDropTheLowest());
+            allRolls.Add(DiceManager.FourDSixDropTheLowest());
+
+            var orderedList = allRolls.OrderByDescending(x => x);
+
+            List<AbilityScoreType> primeAdded = new List<AbilityScoreType>();
+
+            int orderedI = 0;
+
+            foreach (var minIndi in _char.MinimumAbilityScoreRequirements)
+            {
+                var thisRoll = orderedList.ElementAt(orderedI);
+                switch(minIndi.Key)
+                {
+                    case AbilityScoreType.Strength:
+                        abilityScores.Strength = abilityScoreRules.SetStrength(thisRoll);
+                        primeAdded.Add(AbilityScoreType.Strength);
+                        ++orderedI;
+                        break;
+                    case AbilityScoreType.Dextarity:
+                        abilityScores.Dexterity = abilityScoreRules.SetDexterity(thisRoll);
+                        primeAdded.Add(AbilityScoreType.Strength);
+                        ++orderedI;
+                        break;
+                    case AbilityScoreType.Constitution:
+                        abilityScores.Constitution = abilityScoreRules.SetConstitution(thisRoll);
+                        primeAdded.Add(AbilityScoreType.Strength);
+                        ++orderedI;
+                        break;
+                    case AbilityScoreType.Intelligence:
+                        abilityScores.Intelligence = abilityScoreRules.SetIntelligence(thisRoll);
+                        primeAdded.Add(AbilityScoreType.Intelligence);
+                        ++orderedI;
+                        break;
+                    case AbilityScoreType.Wisdom:
+                        abilityScores.Wisdom = abilityScoreRules.SetWisdom(thisRoll);
+                        primeAdded.Add(AbilityScoreType.Wisdom);
+                        ++orderedI;
+                        break;
+                    case AbilityScoreType.Charisma:
+                        abilityScores.Charisma = abilityScoreRules.SetCharisma(thisRoll);
+                        primeAdded.Add(AbilityScoreType.Charisma);
+                        ++orderedI;
+                        break;
+                }
+            }
+
+            List<AbilityScoreType> AllAbilityScores = new List<AbilityScoreType>
+            {
+                AbilityScoreType.Strength,
+                AbilityScoreType.Dextarity,
+                AbilityScoreType.Constitution,
+                AbilityScoreType.Intelligence,
+                AbilityScoreType.Wisdom,
+                AbilityScoreType.Charisma
+            };
+
+            foreach(var this_ability in AllAbilityScores)
+            {
+                var thisRoll = orderedList.ElementAt(orderedI);
+                if (!primeAdded.Contains(this_ability))
+                {
+                    switch (this_ability)
+                    {
+                        case AbilityScoreType.Strength:
+                            abilityScores.Strength = abilityScoreRules.SetStrength(thisRoll);
+                            ++orderedI;
+                            break;
+                        case AbilityScoreType.Dextarity:
+                            abilityScores.Dexterity = abilityScoreRules.SetDexterity(thisRoll);
+                            ++orderedI;
+                            break;
+                        case AbilityScoreType.Constitution:
+                            abilityScores.Constitution = abilityScoreRules.SetConstitution(thisRoll);
+                            ++orderedI;
+                            break;
+                        case AbilityScoreType.Intelligence:
+                            abilityScores.Intelligence = abilityScoreRules.SetIntelligence(thisRoll);
+                            ++orderedI;
+                            break;
+                        case AbilityScoreType.Wisdom:
+                            abilityScores.Wisdom = abilityScoreRules.SetWisdom(thisRoll);
+                            ++orderedI;
+                            break;
+                        case AbilityScoreType.Charisma:
+                            abilityScores.Charisma = abilityScoreRules.SetCharisma(thisRoll);
+                            ++orderedI;
+                            break;
+                    }
+                }
+            }
+
             return abilityScores;
         }
         public static AbilityScores UpdateAbilityScores(AbilityScores abilityScores)
@@ -146,32 +238,32 @@ namespace ADD2E_Core.Services
             {
                 if(_req.Key == AbilityScoreType.Strength)
                 {
-                    problemAbilityScore = _req.Key.ToString();
+                    problemAbilityScore = _req.Key.ToString() + string.Format($"({_abilityScores.Strength.Value})");
                     if (_abilityScores.Strength.Value < _req.Value) { doesMeetRequirements = false; break; }
                 }
                 if (_req.Key == AbilityScoreType.Constitution)
                 {
-                    problemAbilityScore = _req.Key.ToString();
+                    problemAbilityScore = _req.Key.ToString() + string.Format($"({_abilityScores.Constitution.Value})");
                     if (_abilityScores.Constitution.Value < _req.Value) { doesMeetRequirements = false; break; }
                 }
                 if (_req.Key == AbilityScoreType.Charisma)
                 {
-                    problemAbilityScore = _req.Key.ToString();
+                    problemAbilityScore = _req.Key.ToString() + string.Format($"({_abilityScores.Charisma.Value})");
                     if (_abilityScores.Charisma.Value < _req.Value) { doesMeetRequirements = false; break; }
                 }
                 if (_req.Key == AbilityScoreType.Dextarity)
                 {
-                    problemAbilityScore = _req.Key.ToString();
+                    problemAbilityScore = _req.Key.ToString() + string.Format($"({_abilityScores.Dexterity.Value})");
                     if (_abilityScores.Dexterity.Value < _req.Value) { doesMeetRequirements = false; break; } 
                 }
                 if (_req.Key == AbilityScoreType.Wisdom)
                 {
-                    problemAbilityScore = _req.Key.ToString();
+                    problemAbilityScore = _req.Key.ToString() + string.Format($"({_abilityScores.Wisdom.Value})");
                     if (_abilityScores.Wisdom.Value < _req.Value) { doesMeetRequirements = false; break; } 
                 }
                 if (_req.Key == AbilityScoreType.Intelligence)
                 {
-                    problemAbilityScore = _req.Key.ToString();
+                    problemAbilityScore = _req.Key.ToString() + string.Format($"({_abilityScores.Intelligence.Value})");
                     if (_abilityScores.Intelligence.Value < _req.Value) { doesMeetRequirements = false; break; }
                     
                 }

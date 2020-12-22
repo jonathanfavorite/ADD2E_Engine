@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using ADD2E_Core.Models;
 using ADD2E_Core.Interfaces;
 using ADD2E_Core.Enums;
@@ -27,6 +28,7 @@ namespace ADD2E_Core.Services
                 Console.WriteLine($" Race: {p.Race.Name}");
                 Console.WriteLine($" Level: {p.Level}");
                 Console.WriteLine($" Experience: {p.Experience} / {p.NextLevelInfo.Experience} ({c.CurrentLevelProgressExp}% completed)");
+                ShowExperienceBar(p);
                 Console.WriteLine($" HP: {p.HitPoints} / {p.TmpHitPoints}");
                 Console.WriteLine($" Thaco: {p.Thaco.Value}");
                 Console.WriteLine($" AC: {p.ArmorClass}");
@@ -41,6 +43,7 @@ namespace ADD2E_Core.Services
                     ShowCoinPurse(p);
                     //ShowPrimaryWeapon(p);
                     ShowEquippedGear(p);
+                    ShowSpellBook(p);
                 }
             }
         }
@@ -54,7 +57,28 @@ namespace ADD2E_Core.Services
             Console.WriteLine($" Widsom:       {p.AbilityScores.Wisdom.Value} ({AbilityAdj(p.AbilityScores.Wisdom.MagicalDefenceAdjustment)})");
             Console.WriteLine($" Charisma:     {p.AbilityScores.Charisma.Value} ({AbilityAdj(p.AbilityScores.Charisma.ReactionAdjustment)})");
         }
-
+        private void ShowExperienceBar(ICharacter p)
+        {
+            if (p is IPlayerCharacter pc)
+            {
+                //⬜⬛
+                string final = "";
+                int boxTotal = 14;
+                int boxes = Convert.ToInt32(Math.Round((double)boxTotal * ((double)pc.CurrentLevelProgressExp / 100)));
+                for (int i = 1; i <= boxTotal; i++)
+                {
+                    if(i <= boxes)
+                    {
+                        final += "[X]";
+                    }
+                    else
+                    {
+                        final += "[ ]";
+                    }
+                }
+                Console.WriteLine(" Experience Bar: " + final);
+            }
+        }
         public void ShowSavingThrows(ICharacter p)
         {
             Console.WriteLine($"\r\n-- Saving Throws --");
@@ -138,8 +162,17 @@ namespace ADD2E_Core.Services
                 {
                     Console.WriteLine($" -{g.Name} ({g.SlotType})");
                     ShowGearBonus(item.StatMods);
+                    Console.WriteLine($"\t-AC ({FormatAC(g.AC)})");
                 }
             }
+        }
+        private int FormatAC(int ac)
+        {
+            if(ac < 0)
+            {
+                ac += 10;
+            }
+            return ac;
         }
         private void ShowGearBonus(List<StatModifier> bonus)
         {
@@ -148,9 +181,52 @@ namespace ADD2E_Core.Services
                 Console.WriteLine("\t-{0} ({1})", b.Modifier, AbilityAdj(b.Value));
             }
         }
-        
-
-
-
+        public void ShowSpellBook(ICharacter p)
+        {
+            Console.WriteLine($"\r\n-- {p.Name}'s Spell Book --");
+            Console.WriteLine("");
+            foreach(ISpell spell in p.SpellBook)
+            {
+                Console.WriteLine($"{spell.Name} (Level {spell.Level})");
+                ShowSpellSchools(spell);
+                Console.WriteLine($"Range: {spell.Range.yards} {spell.Range.RangeType}");
+                ShowSpellComponents(spell);
+                Console.WriteLine($"Duration: {spell.Duration.DurationType}");
+                Console.WriteLine($"Area Of Effect: {spell.AOE.AOESize} {spell.AOE.Ruler} {spell.AOE.Type}");
+                ShowSpellSavingThrows(spell);
+                Console.WriteLine($"Description: {spell.Description}");
+                Console.WriteLine("");
+            }
+        }
+        private void ShowSpellSchools(ISpell s)
+        {
+            List<string> resp = new List<string>();
+            foreach(SpellSchool school in s.School)
+            {
+                resp.Add(school.ToString());
+            }
+            string n = string.Join(", ", resp);
+            Console.WriteLine($"School: {n}");
+        }
+        private void ShowSpellComponents(ISpell s)
+        {
+            List<string> resp = new List<string>();
+            foreach (SpellCompontents comp in s.Compontents)
+            {
+                resp.Add(comp.ToString());
+            }
+            string n = string.Join(", ", resp);
+            Console.WriteLine($"Components: {n}");
+        }
+        private void ShowSpellSavingThrows(ISpell s)
+        {
+            List<string> resp = new List<string>();
+            foreach (SavingThrowType save in s.SavingThrows)
+            {
+                resp.Add(save.ToString());
+            }
+            string n = string.Join(", ", resp);
+            Console.WriteLine($"Saving Throws: {n}");
+        }
     }
 }

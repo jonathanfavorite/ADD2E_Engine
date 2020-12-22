@@ -31,11 +31,13 @@ namespace ADD2E_Core.Interfaces
         ClassType ClassType { get; set; }
         IWeapon SecondaryWeapon { get; set; }
         List<IEquipment> EquippedGear { get; set; }
+        List<ISpell> SpellBook { get; set; }
         void CreateCharacter();
         void AddItem(IEquipment item, int quantity);
         void RemoveItem(IEquipment item, int quantity);
         void AddMoney(Money m);
         void RemoveMoney(Money m);
         void EquipItem(IEquipment item);
+        void AddSpell(ISpell spell);
     }
 }

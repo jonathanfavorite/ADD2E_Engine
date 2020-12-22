@@ -6,6 +6,7 @@ namespace ADD2E_Core.Enums
 {
     public enum SavingThrowType
     {
+        None,
         Paralyzation,
         Poison,
         DeathMagic,

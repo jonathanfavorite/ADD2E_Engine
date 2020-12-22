@@ -34,42 +34,72 @@ namespace ADD2E_Core.Extensions
         }
         public static int CalculateArmorClass(List<IEquipment> equipment)
         {
+            // Get the average of all gear
             var ACList = new List<int>();
             var ACBonusFromGear = ArmorClassBonus(equipment);
-            foreach(IEquipment item in equipment)
+            int acTotal = 0;
+           
+            List<EquipmentSlot> GearSlots = new List<EquipmentSlot>
             {
-                if(item is IGear g)
+                EquipmentSlot.HEAD,
+                EquipmentSlot.SHOULDER,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.WRIST,
+                EquipmentSlot.HANDS,
+                EquipmentSlot.LEGS,
+                EquipmentSlot.FEET
+            };
+
+            int defaultAC = 10;
+            int slottedCount = 0;
+            foreach (IEquipment item in equipment)
+            {
+                if (item is IGear g)
                 {
-                    ACList.Add(g.AC);
+                    if (GearSlots.Contains(g.SlotType))
+                    {
+                        acTotal += g.AC;
+                        ++slottedCount;
+                    }
                 }
             }
-            if (ACList.Count > 0)
+
+            if(slottedCount < GearSlots.Count())
             {
-                var ordered = ACList.OrderBy(x => x).ToList();
-                if (ordered.Count() > 0)
-                {
-                    return ordered.First() - ACBonusFromGear;
-                }
-                else
-                {
-                    return 10;
-                }
+                int findDifference = GearSlots.Count() - slottedCount;
+                acTotal += findDifference * defaultAC;
+            }
+
+            acTotal -= ACBonusFromGear;
+
+            if(slottedCount > 0)
+            {
+                double acAverageMath = ((double)acTotal / GearSlots.Count());
+                if(acAverageMath > 10) { acAverageMath = defaultAC;  }
+                int acAverageFinal = Convert.ToInt32(Math.Round(acAverageMath));
+                return acAverageFinal;
             }
             else
             {
-                return 10;
+                return defaultAC;
             }
+
         }
+        //private static bool 
         private static int ArmorClassBonus(List<IEquipment> equipment)
         {
             int totalBonus = 0;
             foreach(IEquipment item in equipment)
             {
-                foreach (StatModifier bonus in item.StatMods)
+                if (item is IGear g)
                 {
-                    if (bonus.Modifier == ItemBonusList.AC)
+                    //totalBonus += g.AC;
+                    foreach (StatModifier bonus in item.StatMods)
                     {
-                        totalBonus += bonus.Value;
+                        if (bonus.Modifier == ItemBonusList.AC)
+                        {
+                            totalBonus += bonus.Value;
+                        }
                     }
                 }
             }

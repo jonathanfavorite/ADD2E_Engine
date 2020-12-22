@@ -24,7 +24,15 @@ namespace ADD2E_Core.Models
 
         public void CreateItem()
         {
-            ItemID = "item_" + IDGenerator.nextID();
+            ItemID = "gear" + "_" + IDGenerator.nextID();
+            if(AC == 0)
+            {
+              //  AC = -10;
+            }
+            else if(AC < 0)
+            {
+                AC = AC - 10;
+            }
         }
     }
 }
