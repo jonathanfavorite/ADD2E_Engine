@@ -88,7 +88,7 @@ namespace ADD2E_Core.Models
             TmpHitPoints = Convert.ToInt32(HitPoints);
             Thaco = CharacterManager.SetupThaco(Class.ClassGroup, Level);
             SavingThrows = ClassManager.SetupSavingThrows(Class.ClassGroup, Level);
-            if(Experience > NextLevelInfo.Experience && Level == 20)
+            if(Experience > NextLevelInfo.Experience && Level == ClassManager.MaxLevel)
             {
                 CurrentLevelProgressExp = 100.00;
             }
@@ -119,13 +119,11 @@ namespace ADD2E_Core.Models
         }
         public void AddExperience(int exp)
         {
-            //Console.WriteLine($"Adding {exp} to {Name}");
-            //Console.WriteLine($"Current Level: {Level}");
             ExperienceResponse addExp = CharacterManager.AddEXP(Experience, NextLevelInfo.Experience, ClassType, exp);
             Experience = addExp.ExperienceTotal;
             if(addExp.ResponseType == CharacterResponseTypes.LEVELEDUP)
             {
-                
+                // Character leveled up
                 LevelInfo = addExp.NewExperienceLevel;
                 int levelDifference = addExp.NewExperienceLevel.Level - Level;
                 NextLevelInfo = addExp.NextExperienceLevel;
@@ -133,16 +131,8 @@ namespace ADD2E_Core.Models
 
                 var currentHitPointMax = HitPoints;
                 HitPoints = CharacterManager.UpdateHitPoints(Class, AbilityScores, Convert.ToInt32(currentHitPointMax), levelDifference);
-                
-                //Console.WriteLine($"{Name} leveled up from {Level} to {addExp.NewExperienceLevel.Level}");
-                //Console.WriteLine($"New Level: {addExp.NewExperienceLevel.Level}");
-            }
-            else
-            {
-                //CurrentLevelProgressExp = CharacterManager.CurrentLevelCompletedPercentage(Experience, LevelInfo.Experience, NextLevelInfo.Experience);
             }
             RefreshCharacter();
-            //Console.WriteLine($"Added {exp} experience. ({Experience} / {NextLevelInfo.Experience})\r\n");
         }
         public void EquipItem(IEquipment item)
         {
@@ -207,16 +197,7 @@ namespace ADD2E_Core.Models
         }
         private void EquipGear(IGear item)
         {
-            List<EquipmentSlot> UniqueSlots = new List<EquipmentSlot>
-            {
-                EquipmentSlot.HEAD,
-                EquipmentSlot.CHEST,
-                EquipmentSlot.WRIST,
-                EquipmentSlot.HANDS,
-                EquipmentSlot.LEGS,
-                EquipmentSlot.FEET
-            };
-            if(UniqueSlots.Contains(item.SlotType))
+            if(CharacterManager.UniqueSlots.Contains(item.SlotType))
             {
                 var foundItemInEquipped = EquippedGear.OfType<IGear>().Any(x => x.SlotType == item.SlotType);
                 if(foundItemInEquipped)

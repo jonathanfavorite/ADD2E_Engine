@@ -43,13 +43,12 @@ namespace ADD2E_Core.Services
             int silverMath = m.Silver * quantity;
             int copperMath = m.Copper * quantity;
 
-            Money newMoney = new Money
+            return new Money
             {
                 Gold = goldMath,
                 Silver = silverMath,
                 Copper = copperMath
             };
-            return newMoney;
         }
         public int CountHowManyEquippedBySlotType(EquipmentSlot slot, List<IEquipment> allItems)
         {

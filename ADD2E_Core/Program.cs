@@ -32,9 +32,9 @@ namespace ADD2E_Core
                 //allChars.Add(GoblinGroup[i]);
             }
 
-           UIManager.ShowCharacterInfo(Felix, true);
+         //  UIManager.ShowCharacterInfo(Felix, true);
 
-            /*
+            
             for(int i = 0; i <= 5000; i++)
             {
                 if (Felix is IPlayerCharacter c)
@@ -50,7 +50,7 @@ namespace ADD2E_Core
                 }
                 Console.Clear();
             }
-            */
+            
             
 
            

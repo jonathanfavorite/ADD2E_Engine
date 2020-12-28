@@ -8,8 +8,8 @@ namespace ADD2E_Core.Services
 {
     public static class ClassManager
     {
-       private static Dictionary<ClassType, List<ClassExperienceLevel>> experienceLevels;
-
+        private static Dictionary<ClassType, List<ClassExperienceLevel>> experienceLevels;
+        public static int MaxLevel = 20;
         private static void AddExperienceLevels()
         {
             experienceLevels = new Dictionary<ClassType, List<ClassExperienceLevel>>();

@@ -317,7 +317,19 @@ namespace ADD2E_Core.Services
         }
         #endregion
 
+        #region Equipping
+
         #region Inventory 
+
+        public static List<EquipmentSlot> UniqueSlots = new List<EquipmentSlot> {
+                EquipmentSlot.HEAD,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.WRIST,
+                EquipmentSlot.HANDS,
+                EquipmentSlot.LEGS,
+                EquipmentSlot.FEET
+        };
+
         public static List<IEquipment> AddItem(IEquipment item, int quantity = 1)
         {
             List<IEquipment> returnEquipment = new List<IEquipment>();
@@ -398,6 +410,6 @@ namespace ADD2E_Core.Services
             return retItems;
         }
         #endregion
-
+        #endregion
     }
 }
